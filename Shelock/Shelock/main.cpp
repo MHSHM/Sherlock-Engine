@@ -1,12 +1,16 @@
-
-#include <glew.h>
-
-#include <glfw3.h>
-
-#include "../Dependencies/GLM/mat4x4.hpp"
+#include "Game.h"
 
 int main(void)
 {
+
+	Game game; 
+
+	if (game.Initialize()) 
+	{
+		game.Run_Game(); 
+	}
+
+	game.Shutdown_Game();
 
 	return 0; 
 }

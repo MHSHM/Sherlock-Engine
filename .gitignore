@@ -1,0 +1,15 @@
+
+Shelock/Shelock/Debug/Shelock.tlog/unsuccessfulbuild
+*.tlog
+*.log
+*.recipe
+*.obj
+*.db
+*.db-shm
+*.db-wal
+*.opendb
+Shelock/.vs/Shelock/v16/.suo
+*.ipch
+*.exe
+*.ilk
+*.pdb

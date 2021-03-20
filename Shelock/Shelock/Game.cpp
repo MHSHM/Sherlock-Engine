@@ -10,7 +10,7 @@ bool Game::Initialize()
 {
 	if (!glfwInit())
 	{
-		std::cout << "Failed to Initialize GLFW!\n";
+		std::cerr << "failed to Initialize GLFW!\n";
 		return false;
 	}
 
@@ -32,6 +32,7 @@ bool Game::Initialize()
 	if (GLEW_OK != err)
 	{
 		fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
+		return false; 
 	}
 
 	return true;

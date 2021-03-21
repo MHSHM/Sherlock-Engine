@@ -3,7 +3,7 @@
 int main(void)
 {
 
-	Game game; 
+	Game game;		
 
 	if (game.Initialize()) 
 	{

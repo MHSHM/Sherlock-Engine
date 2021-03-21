@@ -5,6 +5,8 @@
 #define WINDOW_WIDTH 1280
 #define WINDOW_HEIGHT 720
 
+static float time_since_last_frame = 0.0f; 
+
 #include <glew.h>
 #include <glfw3.h>
 #include <iostream>
@@ -24,12 +26,12 @@ public:
 
 private:
 	void Process_Input(); 
-	void Update_Game(); 
+	void Update(); 
 	void Generate_Output(); 
 
 
 private:
-	bool game_running; 
+	GLFWwindow* window;
 
-	GLFWwindow* window; 
+	bool game_running; 
 };

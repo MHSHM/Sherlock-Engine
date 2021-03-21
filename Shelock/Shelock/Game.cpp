@@ -43,7 +43,7 @@ void Game::Run_Game()
 	while (game_running) 
 	{
 		Process_Input(); 
-		Update_Game(); 
+		Update(); 
 		Generate_Output(); 
 	}
 }
@@ -56,13 +56,15 @@ void Game::Process_Input()
 	glfwPollEvents();
 }
 
-void Game::Update_Game()
+void Game::Update()
 {
-
+	float delta_time = glfwGetTime() - time_since_last_frame;
+	time_since_last_frame = glfwGetTime();
 }
 
 void Game::Generate_Output()
 {
+
 }
 
 void Game::Shutdown_Game()

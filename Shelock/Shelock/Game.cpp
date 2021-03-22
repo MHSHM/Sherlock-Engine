@@ -1,7 +1,8 @@
 #include "Game.h"
 
 Game::Game() :
-	game_running(true)
+	game_running(true),
+	window(nullptr)
 {
 	
 }
@@ -52,6 +53,12 @@ void Game::Process_Input()
 {
 	game_running = !glfwWindowShouldClose(window); 
 
+	std::vector<SceneNode*>& scene_nodes = scene.Get_Scene_Nodes(); 
+	
+	for (auto& node : scene_nodes) 
+	{
+		node->Get_Actor()->Process_Input(); 
+	}
 
 	glfwPollEvents();
 }
@@ -60,6 +67,13 @@ void Game::Update()
 {
 	float delta_time = glfwGetTime() - time_since_last_frame;
 	time_since_last_frame = glfwGetTime();
+
+	std::vector<SceneNode*>& scene_nodes = scene.Get_Scene_Nodes();
+
+	for (auto& node : scene_nodes)
+	{
+		node->Get_Actor()->Update(delta_time); 
+	}
 }
 
 void Game::Generate_Output()
@@ -70,6 +84,7 @@ void Game::Generate_Output()
 void Game::Shutdown_Game()
 {
 	glfwTerminate();
+	scene.Clear_Scene(); 
 }
 
 Game::~Game() 

@@ -24,6 +24,8 @@ struct Rotation
 	}
 
 	glm::vec3 axis; 
+	
+	// in degrees
 	float angle; 
 };
 

@@ -13,6 +13,11 @@ void Scene::Add_Scene_Node(SceneNode* node)
 
 void Scene::Remove_Scene_Node(SceneNode* node)
 {
+	if (node->Get_Parent()) 
+	{
+		node->Get_Parent()->Remove_Child(node); 
+	}
+
 	for (auto child : node->Get_Children()) 
 	{
 		Remove_Scene_Node(child); 

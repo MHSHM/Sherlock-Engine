@@ -14,7 +14,10 @@ public:
 	void Remove_Child(SceneNode* child);
 
 	class Actor* Get_Actor() { return actor;  }
+	SceneNode* Get_Parent() { return parent;  }
 	std::vector<SceneNode*>& Get_Children() { return children;  }
+
+	void Set_Actor(class Actor* _actor) { actor = _actor;  }
 
 	~SceneNode(); 
 

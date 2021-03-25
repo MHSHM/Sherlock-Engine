@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Transform.h"
+#include <vector>
 
 class Actor
 {
@@ -8,14 +8,30 @@ public:
 
 	Actor();
 
-	virtual void Process_Input();
-	void Update(float delta_time); 
+	void Add_Component(class Component* cmp);
+	void Remove_Component(class Component* cmp); 
 
-	Transform& Get_Transform() { return transform_component;  }
+	template<class T>
+	T* Get_Component(); 
 
-	virtual ~Actor() {};
+	void Update(float delta_time);
 
-protected:
-	Transform transform_component;
+	~Actor();
+
+private:
+	std::vector<class Component*> components; 
 };
 
+template<class T>
+T* Actor::Get_Component()
+{
+	for (int i = 0; i < components.size(); ++i)
+	{
+		T* t = dynamic_cast<T*>(components[i]);
+		if (t != nullptr)
+		{
+			return t;
+		}
+	}
+	return nullptr;
+}

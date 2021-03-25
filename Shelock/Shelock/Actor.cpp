@@ -1,17 +1,40 @@
 #include "Actor.h"
 
-Actor::Actor():
-	transform_component(this)
-{
+#include "Transform.h"
 
+Actor::Actor()
+{
+	// transform component by default
+	new Transform(this); 
 }
 
-void Actor::Process_Input()
+void Actor::Add_Component(Component* cmp)
 {
+	components.emplace_back(cmp); 
+}
 
+void Actor::Remove_Component(Component* cmp)
+{
+	auto iter = std::find(components.begin(), components.end(), cmp);
+	if (iter != components.end()) 
+	{
+		delete* iter; 
+		components.erase(iter); 
+	}
 }
 
 void Actor::Update(float delta_time)
 {
-	transform_component.Update(delta_time);
+	for (int i = 0; i < components.size(); ++i) 
+	{
+		components[i]->Update(delta_time); 
+	}
+}
+
+Actor::~Actor()
+{
+	for (int i = 0; i < components.size(); ++i) 
+	{
+		Remove_Component(components[i]); 
+	}
 }

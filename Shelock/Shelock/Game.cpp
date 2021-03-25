@@ -1,5 +1,10 @@
 #include "Game.h"
 
+#include "SceneNode.h"
+#include "Actor.h"
+#include "Model.h"
+
+
 Game::Game() :
 	game_running(true),
 	window(nullptr)
@@ -53,13 +58,6 @@ void Game::Process_Input()
 {
 	game_running = !glfwWindowShouldClose(window); 
 
-	std::vector<SceneNode*>& scene_nodes = scene.Get_Scene_Nodes(); 
-	
-	for (auto& node : scene_nodes) 
-	{
-		node->Get_Actor()->Process_Input(); 
-	}
-
 	glfwPollEvents();
 }
 
@@ -69,11 +67,12 @@ void Game::Update()
 	time_since_last_frame = glfwGetTime();
 
 	std::vector<SceneNode*>& scene_nodes = scene.Get_Scene_Nodes();
-
-	for (auto& node : scene_nodes)
+	
+	for (int i = 0; i < scene_nodes.size(); ++i) 
 	{
-		node->Get_Actor()->Update(delta_time); 
+		scene_nodes[i]->Get_Actor()->Update(delta_time); 
 	}
+
 }
 
 void Game::Generate_Output()

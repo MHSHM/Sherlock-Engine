@@ -8,7 +8,7 @@ class Component
 public:
 	Component(Actor* _owner); 
 
-	virtual void Update(float delta_time) = 0;
+	virtual void Update(float delta_time); 
 
 	virtual ~Component() {};
 

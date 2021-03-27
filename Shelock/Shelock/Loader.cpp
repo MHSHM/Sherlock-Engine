@@ -4,7 +4,28 @@
 #include "Transform.h"
 #include "Model.h"
 
-void Loader::Process_Node(const aiNode* node, Scene& scene, SceneNode* parent = nullptr)
+
+SceneNode* Loader::Load(Scene& scene, const std::string& path)
+{
+	Assimp::Importer importer;
+
+	const aiScene* imported_scene = importer.ReadFile(path,
+		aiProcess_Triangulate |
+		aiProcess_JoinIdenticalVertices);
+
+	if (!imported_scene) {
+		std::cerr << "failed to load scene/model with path: " << path << std::endl;
+		return nullptr;
+	}
+
+	scene_root = imported_scene->mRootNode;
+	scene_meshes = imported_scene->mMeshes;
+	scene_materials = imported_scene->mMaterials;
+
+	return Process_Node(scene_root, scene);
+}
+
+SceneNode* Loader::Process_Node(const aiNode* node, Scene& scene)
 {
 	SceneNode* scene_node = new SceneNode(scene);
 	
@@ -17,35 +38,7 @@ void Loader::Process_Node(const aiNode* node, Scene& scene, SceneNode* parent = 
 	scene_node->Get_Actor()->Add_Component(transform); 
 	scene_node->Get_Actor()->Add_Component(model_cmp); 
 
-	if (parent)
-	{
-		parent->Add_Child(scene_node);
-	}
-
-	for (int i = 0; i < node->mNumChildren; ++i)
-	{
-		Process_Node(node->mChildren[i], scene, scene_node);
-	}
-}
-
-void Loader::Load(Scene& scene, const std::string& path)
-{
-	Assimp::Importer importer;
-
-	const aiScene* imported_scene = importer.ReadFile(path,
-		aiProcess_Triangulate |
-		aiProcess_JoinIdenticalVertices);
-
-	if (!imported_scene) {
-		std::cerr << "failed to load scene/model with path: " << path << std::endl;
-		return;
-	}
-
-	scene_root = imported_scene->mRootNode;
-	scene_meshes = imported_scene->mMeshes;
-	scene_materials = imported_scene->mMaterials;
-
-	Process_Node(scene_root, scene);
+	return scene_node; 
 }
 
 std::vector<Mesh> Loader::Process_Meshes(const aiNode* node)

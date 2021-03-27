@@ -15,10 +15,10 @@ public:
 	Loader() = default; 
 
 
-	void Load(Scene& scene, const std::string& path); 
+	class SceneNode* Load(Scene& scene, const std::string& path); 
 
 private:
-	void Process_Node(const aiNode* node, Scene& scene, class SceneNode* parent);
+	class SceneNode* Process_Node(const aiNode* node, Scene& scene);
 	std::vector<Mesh> Process_Meshes(const aiNode* node); 
 
 	aiMesh** scene_meshes;

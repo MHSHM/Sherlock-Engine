@@ -1,11 +1,8 @@
 #include "Actor.h"
-
 #include "Transform.h"
 
 Actor::Actor()
 {
-	// transform component by default
-	new Transform(this); 
 }
 
 void Actor::Add_Component(Component* cmp)

@@ -1,10 +1,5 @@
 #include "Game.h"
 
-#include "SceneNode.h"
-#include "Actor.h"
-#include "Model.h"
-
-
 Game::Game() :
 	game_running(true),
 	window(nullptr)

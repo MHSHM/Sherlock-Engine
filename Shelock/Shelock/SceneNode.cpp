@@ -1,9 +1,11 @@
 #include "SceneNode.h"
+#include "Actor.h"
 
 SceneNode::SceneNode(Scene& scene):
 	actor(nullptr),
 	parent(nullptr)
 {
+	actor = new Actor; 
 	scene.Add_Scene_Node(this); 
 }
 
@@ -25,5 +27,5 @@ void SceneNode::Remove_Child(SceneNode* child)
 
 SceneNode::~SceneNode()
 {
-	
+	delete actor; 
 }

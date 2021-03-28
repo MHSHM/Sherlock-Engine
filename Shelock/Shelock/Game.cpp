@@ -2,7 +2,8 @@
 
 Game::Game() :
 	game_running(true),
-	window(nullptr)
+	window(nullptr),
+	scene(this)
 {
 	
 }
@@ -58,27 +59,26 @@ void Game::Process_Input()
 
 void Game::Update()
 {
+
 	float delta_time = glfwGetTime() - time_since_last_frame;
 	time_since_last_frame = glfwGetTime();
 
-	std::vector<SceneNode*>& scene_nodes = scene.Get_Scene_Nodes();
-	
-	for (int i = 0; i < scene_nodes.size(); ++i) 
-	{
-		scene_nodes[i]->Get_Actor()->Update(delta_time); 
-	}
+	std::vector<Transform>& transforms = scene.Get_Transforms(); 
 
+	for (int i = 0; i < transforms.size(); ++i) 
+	{
+		transforms[i].Update(delta_time); 
+	}
 }
 
 void Game::Generate_Output()
 {
-
+	
 }
 
 void Game::Shutdown_Game()
 {
 	glfwTerminate();
-	scene.Clear_Scene(); 
 }
 
 Game::~Game() 

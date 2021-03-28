@@ -1,18 +1,24 @@
 #include "Scene.h"
-#include "SceneNode.h"
+#include "Game.h"
 
-Scene::Scene()
+Scene::Scene(Game* _game):
+	game(_game)
 {
-
+	scene_nodes.reserve(MAX_SCENE_NODES); 
+	scene_actors.reserve(MAX_SCENE_NODES); 
+	scene_nodes_transforms.reserve(MAX_SCENE_NODES); 
+	scene_nodes_models.reserve(MAX_SCENE_NODES); 
 }
 
-void Scene::Add_Scene_Node(SceneNode* node)
+SceneNode* Scene::Add_Scene_Node(SceneNode node)
 {
-	scene_nodes.emplace_back(node); 
+	scene_nodes.push_back(node); 
+	return &scene_nodes.back();
 }
 
 void Scene::Remove_Scene_Node(SceneNode* node)
 {
+	
 	if (node->Get_Parent()) 
 	{
 		node->Get_Parent()->Remove_Child(node); 
@@ -23,19 +29,10 @@ void Scene::Remove_Scene_Node(SceneNode* node)
 		Remove_Scene_Node(child); 
 	}
 
-	auto iter = std::find(scene_nodes.begin(), scene_nodes.end(), node); 
-	delete *iter;
-	scene_nodes.erase(iter);
-}
-
-void Scene::Clear_Scene()
-{
-	for (auto& node : scene_nodes) 
-	{
-		delete node; 
-		node = nullptr; 
-	}
-	scene_nodes.clear(); 
+	auto iter1 = std::find(scene_nodes.begin(), scene_nodes.end(), *node);
+	auto iter2 = std::find(scene_actors.begin(), scene_actors.end(), *(node->Get_Actor())); 
+	scene_nodes.erase(iter1);
+	scene_actors.erase(iter2); 
 }
 
 Scene::~Scene()

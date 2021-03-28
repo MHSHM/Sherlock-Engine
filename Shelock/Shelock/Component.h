@@ -1,16 +1,25 @@
 #pragma once
 
-
-class Actor; 
+enum class ComponentType
+{
+	TransformComp,
+	ModelComp,
+	CameraComp
+};
 
 class Component
 {
 public:
-	Component(Actor* _owner); 
+	Component(class Actor* _owner); 
 
 	virtual void Update(float delta_time); 
 
 	virtual ~Component() {};
+
+	inline bool operator==(const Component& other) 
+	{
+		return (this == &other);
+	}
 
 protected:
 	Actor* owner; 

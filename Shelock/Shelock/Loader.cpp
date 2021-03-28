@@ -1,8 +1,5 @@
 #include "Loader.h"
-#include "SceneNode.h"
-#include "Actor.h"
-#include "Transform.h"
-#include "Model.h"
+#include "Scene.h"
 
 
 SceneNode* Loader::Load(Scene& scene, const std::string& path)
@@ -27,17 +24,15 @@ SceneNode* Loader::Load(Scene& scene, const std::string& path)
 
 SceneNode* Loader::Process_Node(const aiNode* node, Scene& scene)
 {
-	SceneNode* scene_node = new SceneNode(scene);
+
+	SceneNode* scene_node = scene.Add_Scene_Node(SceneNode(&scene)); 
 	
-	Transform* transform = new Transform(scene_node->Get_Actor()); 
+	scene_node->Get_Actor()->Add_Component(ComponentType::TransformComp); 
 	
-	Model* model_cmp = new Model(scene_node->Get_Actor());
+	scene_node->Get_Actor()->Add_Component(ComponentType::ModelComp); 
 	std::vector<Mesh> meshes = Process_Meshes(node);
-	model_cmp->Set_Meshes(meshes);
-
-	scene_node->Get_Actor()->Add_Component(transform); 
-	scene_node->Get_Actor()->Add_Component(model_cmp); 
-
+	scene_node->Get_Actor()->Get_Model_Component()->Set_Meshes(meshes); 
+	
 	return scene_node; 
 }
 

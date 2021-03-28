@@ -1,37 +1,35 @@
 #pragma once
 
+#include "Component.h"
+
 #include <vector>
 
 class Actor
 {
 public:
 
-	Actor();
+	Actor(class Game* _game);
 
-	void Add_Component(class Component* cmp);
-	void Remove_Component(class Component* cmp); 
+	void Add_Component(const ComponentType& type);
+	void Remove_Component(const ComponentType& type);
 
-	template<class T>
-	T* Get_Component(); 
+	inline bool operator==(const Actor& other)
+	{
+		return (this == &other); 
+	}
 
-	void Update(float delta_time);
+	class Transform* Get_Transform_component() { return transform_component;  }
+	class Model* Get_Model_Component() { return model_Component;  }
+
+	void Set_Transform(class Transform* transform) { transform_component = transform;  }
 
 	~Actor();
 
 private:
-	std::vector<class Component*> components; 
-};
 
-template<class T>
-T* Actor::Get_Component()
-{
-	for (int i = 0; i < components.size(); ++i)
-	{
-		T* t = dynamic_cast<T*>(components[i]);
-		if (t != nullptr)
-		{
-			return t;
-		}
-	}
-	return nullptr;
-}
+	class Transform* transform_component; 
+	class Model* model_Component; 
+	
+	class Game* game; 
+
+};

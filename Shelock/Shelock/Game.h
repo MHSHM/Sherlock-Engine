@@ -12,8 +12,6 @@ static float time_since_last_frame = 0.0f;
 #include <iostream>
 
 #include "Scene.h"
-#include "SceneNode.h"
-#include "Actor.h"
 
 class Game 
 {
@@ -27,6 +25,7 @@ public:
 	void Run_Game(); 
 	void Shutdown_Game(); 
 
+	Scene& Get_Scene() { return scene;  }
 
 private:
 	void Process_Input(); 

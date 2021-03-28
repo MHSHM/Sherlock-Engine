@@ -1,24 +1,41 @@
 #pragma once
 
+#include "SceneNode.h"
+#include "Actor.h"
+#include "Transform.h"
+#include "Model.h"
+
+
 #include <vector>
+
+
+#define MAX_SCENE_NODES 100
 
 class Scene
 {
 public:
-	Scene(); 
+	Scene(class Game* _game);
 
-	void Add_Scene_Node(class SceneNode* node); 
-	void Remove_Scene_Node(class SceneNode* node); 
+	SceneNode* Add_Scene_Node(SceneNode node);
+	void Remove_Scene_Node(SceneNode* node);
 
-	std::vector<class SceneNode*>& Get_Scene_Nodes() { return scene_nodes;  }
+	std::vector<SceneNode>& Get_Scene_Nodes() { return scene_nodes;  }
+	std::vector<Actor>& Get_Scene_Actors() { return scene_actors;  }
+	std::vector<Transform>& Get_Transforms() { return scene_nodes_transforms;  }
+	std::vector<Model>& Get_Models() { return scene_nodes_models;  }
 
-	void Clear_Scene(); 
+	class Game* Get_Game() { return game; }
 
 	~Scene();
 
 private:
 
-	std::vector<class SceneNode*> scene_nodes; 
+	std::vector<SceneNode> scene_nodes; 
+	std::vector<Actor> scene_actors; 
+	std::vector<Transform> scene_nodes_transforms; 
+	std::vector<Model> scene_nodes_models; 
+
+	class Game* game; 
 
 };
 

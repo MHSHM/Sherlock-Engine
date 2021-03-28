@@ -1,4 +1,7 @@
-#include "Transform.h"
+
+#include "Scene.h"
+
+
 
 Transform::Transform(Actor* _owner):
 	Component(_owner),
@@ -8,7 +11,6 @@ Transform::Transform(Actor* _owner):
 	world_matrix(glm::mat4x4(1.0f)),
 	recompute_world_matrix(true)
 {
-
 }
 
 void Transform::Update(float delta_time)

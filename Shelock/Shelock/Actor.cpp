@@ -1,37 +1,58 @@
-#include "Actor.h"
-#include "Transform.h"
+#include "Scene.h"
+#include "Game.h"
 
-Actor::Actor()
+Actor::Actor(Game* _game):
+	transform_component(nullptr),
+	model_Component(nullptr),
+	game(_game)
 {
 }
 
-void Actor::Add_Component(Component* cmp)
+void Actor::Add_Component(const ComponentType& type)
 {
-	components.emplace_back(cmp); 
-}
+	std::vector<Transform>& transforms = game->Get_Scene().Get_Transforms();
+	std::vector<Model>& models = game->Get_Scene().Get_Models();
 
-void Actor::Remove_Component(Component* cmp)
-{
-	auto iter = std::find(components.begin(), components.end(), cmp);
-	if (iter != components.end()) 
+	if (type == ComponentType::TransformComp) 
 	{
-		delete* iter; 
-		components.erase(iter); 
+		transforms.push_back(Transform(this));
+		transform_component = &(transforms.back());
+	}
+	else if (type == ComponentType::ModelComp) 
+	{
+		models.push_back(Model(this)); 
+		model_Component = &(models.back()); 
 	}
 }
 
-void Actor::Update(float delta_time)
+void Actor::Remove_Component(const ComponentType& type)
 {
-	for (int i = 0; i < components.size(); ++i) 
+	std::vector<Transform>& transforms = game->Get_Scene().Get_Transforms(); 
+	std::vector<Model>& models = game->Get_Scene().Get_Models(); 
+
+	if (type == ComponentType::TransformComp) 
 	{
-		components[i]->Update(delta_time); 
+		auto iter = std::find(transforms.begin(), transforms.end(), *transform_component); 
+		if (iter != transforms.end())
+		{
+			transforms.erase(iter); 
+			transform_component = nullptr; 
+		}
+	}
+	else if (type == ComponentType::ModelComp) 
+	{
+		auto iter = std::find(models.begin(), models.end(), *model_Component);
+		if (iter != models.end())
+		{
+			models.erase(iter);
+			model_Component = nullptr; 
+		}
 	}
 }
 
 Actor::~Actor()
 {
-	for (int i = 0; i < components.size(); ++i) 
-	{
-		Remove_Component(components[i]); 
-	}
+	transform_component = nullptr; 
+	model_Component = nullptr; 
 }
+

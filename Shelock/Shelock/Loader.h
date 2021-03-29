@@ -19,10 +19,8 @@ public:
 
 private:
 	class SceneNode* Process_Node(const aiNode* node, Scene& scene);
-	std::vector<Mesh> Process_Meshes(const aiNode* node); 
+	std::vector<Mesh> Process_Meshes(); 
 
-	aiMesh** scene_meshes;
-	aiMaterial** scene_materials;
-	aiNode* scene_root; 
+	const aiScene* imported_scene; 
 };
 

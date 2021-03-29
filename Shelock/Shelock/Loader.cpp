@@ -6,7 +6,7 @@ SceneNode* Loader::Load(Scene& scene, const std::string& path)
 {
 	Assimp::Importer importer;
 
-	const aiScene* imported_scene = importer.ReadFile(path,
+	 imported_scene = importer.ReadFile(path,
 		aiProcess_Triangulate |
 		aiProcess_JoinIdenticalVertices);
 
@@ -15,35 +15,26 @@ SceneNode* Loader::Load(Scene& scene, const std::string& path)
 		return nullptr;
 	}
 
-	scene_root = imported_scene->mRootNode;
-	scene_meshes = imported_scene->mMeshes;
-	scene_materials = imported_scene->mMaterials;
-
-	return Process_Node(scene_root, scene);
-}
-
-SceneNode* Loader::Process_Node(const aiNode* node, Scene& scene)
-{
-
 	SceneNode* scene_node = scene.Add_Scene_Node(SceneNode(&scene)); 
-	
+
 	scene_node->Get_Actor()->Add_Component(ComponentType::TransformComp); 
-	
+
 	scene_node->Get_Actor()->Add_Component(ComponentType::ModelComp); 
-	std::vector<Mesh> meshes = Process_Meshes(node);
+	std::vector<Mesh> meshes = Process_Meshes(); 
 	scene_node->Get_Actor()->Get_Model_Component()->Set_Meshes(meshes); 
-	
+
 	return scene_node; 
 }
 
-std::vector<Mesh> Loader::Process_Meshes(const aiNode* node)
+
+std::vector<Mesh> Loader::Process_Meshes()
 {
 	std::vector<Mesh> meshes;
 
-	meshes.resize(node->mNumMeshes); 
-	for (int i = 0; i < node->mNumMeshes; ++i)
+	meshes.resize(imported_scene->mNumMeshes);
+	for (int i = 0; i < imported_scene->mNumMeshes; ++i)
 	{
-		aiMesh* curr_mesh = scene_meshes[node->mMeshes[i]];
+		aiMesh* curr_mesh = imported_scene->mMeshes[i];
 
 		std::vector<glm::vec3> positions;
 		std::vector<glm::vec3> normals;
@@ -64,16 +55,16 @@ std::vector<Mesh> Loader::Process_Meshes(const aiNode* node)
 				normals[j] = glm::vec3(curr_mesh->mNormals[j].x, curr_mesh->mNormals[j].y, curr_mesh->mNormals[j].z);
 			}
 		}
-
+		
 		if (curr_mesh->HasTextureCoords(0))
 		{
 			uv_coords.resize(curr_mesh->mNumVertices);
 			for (int j = 0; j < curr_mesh->mNumVertices; ++j)
 			{
-				uv_coords[j] = glm::vec2(curr_mesh->mTextureCoords[j][0].x, curr_mesh->mTextureCoords[j][0].y);
+				uv_coords[j] = glm::vec2(curr_mesh->mTextureCoords[0][0].x, curr_mesh->mTextureCoords[0][0].y);
 			}
 		}
-
+		
 		indices.resize(curr_mesh->mNumFaces * 3);
 		for (int j = 0; j < curr_mesh->mNumFaces; ++j)
 		{
@@ -86,4 +77,9 @@ std::vector<Mesh> Loader::Process_Meshes(const aiNode* node)
 	}
 
 	return meshes;
+}
+
+SceneNode* Loader::Process_Node(const aiNode* node, Scene& scene)
+{
+	return nullptr; 
 }

@@ -12,6 +12,7 @@ static float time_since_last_frame = 0.0f;
 #include <iostream>
 
 #include "Scene.h"
+#include "Loader.h"
 
 class Game 
 {
@@ -37,6 +38,7 @@ private:
 	GLFWwindow* window;
 
 	Scene scene; 
+	Loader loader; 
 	
 
 	bool game_running; 

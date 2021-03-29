@@ -17,8 +17,8 @@ void Transform::Update(float delta_time)
 {
 	if (recompute_world_matrix) 
 	{
-		glm::mat4x4 translation_matrix = glm::translate(glm::mat4(), position); 
-		glm::mat4x4 scale_matrix = glm::scale(glm::mat4(), glm::vec3(scale)); 
+		glm::mat4x4 translation_matrix = glm::translate(glm::mat4(1.0f), position); 
+		glm::mat4x4 scale_matrix = glm::scale(glm::mat4(1.0f), glm::vec3(scale)); 
 		glm::mat4x4 rotation_matrix = glm::rotate(glm::radians(rotation.angle), rotation.axis);
 		world_matrix = translation_matrix * scale_matrix * rotation_matrix; 
 

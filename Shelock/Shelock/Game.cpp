@@ -37,6 +37,10 @@ bool Game::Initialize()
 		return false; 
 	}
 
+	SceneNode* scene_node = loader.Load(scene, "backpack.obj"); 
+	scene_node->Get_Actor()->Get_Transform_component()->Set_Position(glm::vec3(1.0f, 2.0f, -10.0f));
+	scene_node->Get_Actor()->Get_Transform_component()->Set_Scale(2.0f);
+
 	return true;
 }
 

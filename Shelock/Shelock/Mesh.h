@@ -6,6 +6,7 @@
 #include "../Dependencies/GLM/vec2.hpp"
 
 #include "VertexArrayObject.h"
+#include "Shader.h"
 
 struct Vertex
 {
@@ -32,11 +33,13 @@ public:
 		std::vector<glm::vec2> uv_coords, std::vector<unsigned int> _indices);
 
 	VertexArrayObject& Get_VAO() { return VAO; }
+	Shader& Get_Sahder() { return shader; }
 
 private:
 	
 	std::vector<Vertex> vertices; 
 	std::vector<unsigned int> indices;
 	VertexArrayObject VAO; 
+	Shader shader; 
 };
 

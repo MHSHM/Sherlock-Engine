@@ -2,6 +2,10 @@
 
 #include <string>
 
+#include "../Dependencies/GLM/mat4x4.hpp"
+#include "../Dependencies/GLM/gtc/type_ptr.hpp"
+
+
 class Shader
 {
 public:
@@ -11,6 +15,8 @@ public:
 	void Create_Shader_Program(const std::string& vertex_shader_path, const std::string& fragment_shader_path);
 
 	unsigned int& Get_Shader_program() { return shader_program_id; }
+
+	void Set_Matrix4_Uniform(std::string uniform, glm::mat4& matrix);
 
 	void Bind();
 

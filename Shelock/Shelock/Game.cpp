@@ -45,6 +45,10 @@ bool Game::Initialize()
 		return false; 
 	}
 
+	renderer.Load_Shaders(); 
+
+	Load_Scene_Data(); 
+
 	return true;
 }
 
@@ -77,6 +81,13 @@ void Game::Update()
 	{
 		transforms[i].Update(delta_time); 
 	}
+
+	std::vector<Camera>& cameras = scene.Get_Cameras(); 
+
+	for (int i = 0; i < cameras.size(); ++i) 
+	{
+		cameras[i].Update(delta_time); 
+	}
 }
 
 void Game::Generate_Output()
@@ -92,6 +103,19 @@ bool Game::Initialize_Framebuffers()
 
 
 	return true; 
+}
+
+void Game::Load_Scene_Data()
+{
+	SceneNode* scene_node = loader.Load(scene, "Models/backpack.obj");
+	scene_node->Get_Actor()->Get_Transform_component()->Set_Position(glm::vec3(0.0f, 0.0f, -1.0f));
+	scene_node->Get_Actor()->Get_Transform_component()->Set_Scale(0.3f);
+
+	SceneNode* camera = scene.Add_Scene_Node(SceneNode(&scene));
+	camera->Get_Actor()->Add_Component(ComponentType::TransformComp);
+	camera->Get_Actor()->Get_Transform_component()->Set_Position(glm::vec3(0.0f, 0.0f, 0.0f));
+	camera->Get_Actor()->Add_Component(ComponentType::CameraComp);
+	scene.Set_Active_Camera(camera);
 }
 
 

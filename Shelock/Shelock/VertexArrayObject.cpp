@@ -40,9 +40,9 @@ void VertexArrayObject::Un_Bind()
 	glBindVertexArray(0); 
 }
 
-VertexArrayObject::~VertexArrayObject()
+void VertexArrayObject::Clear()
 {
 	glDeleteVertexArrays(1, &vertex_array_obj_id);
-	glDeleteBuffers(1, &array_buffer_id); 
+	glDeleteBuffers(1, &array_buffer_id);
 	glDeleteBuffers(1, &element_buffer_id);
 }

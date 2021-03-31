@@ -29,5 +29,5 @@ Mesh::Mesh(std::vector<glm::vec3> positions, std::vector<glm::vec3> normals,
 		vertices[i] = std::move(vertex);
 	}
 
-	VAO.Init(vertices, indices);
+	VAO.Init(vertices, indices); 
 }

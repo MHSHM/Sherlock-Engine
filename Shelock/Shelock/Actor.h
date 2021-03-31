@@ -20,6 +20,7 @@ public:
 
 	class Transform* Get_Transform_component() { return transform_component;  }
 	class Model* Get_Model_Component() { return model_Component;  }
+	class Camera* Get_Camera_Component() { return camera_component; }
 
 	void Set_Transform(class Transform* transform) { transform_component = transform;  }
 
@@ -29,7 +30,8 @@ private:
 
 	class Transform* transform_component; 
 	class Model* model_Component; 
-	
+	class Camera* camera_component; 
+
 	class Game* game; 
 
 };

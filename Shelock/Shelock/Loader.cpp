@@ -73,7 +73,7 @@ std::vector<Mesh> Loader::Process_Meshes()
 			indices[(j * 3) + 2] = curr_mesh->mFaces[j].mIndices[2];
 		}
 
-		meshes[i] = std::move(Mesh(positions, normals, uv_coords, indices));
+		meshes[i] = Mesh(positions, normals, uv_coords, indices);
 	}
 
 	return meshes;

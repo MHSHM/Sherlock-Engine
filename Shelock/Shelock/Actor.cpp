@@ -4,6 +4,7 @@
 Actor::Actor(Game* _game):
 	transform_component(nullptr),
 	model_Component(nullptr),
+	camera_component(nullptr),
 	game(_game)
 {
 }
@@ -12,6 +13,7 @@ void Actor::Add_Component(const ComponentType& type)
 {
 	std::vector<Transform>& transforms = game->Get_Scene().Get_Transforms();
 	std::vector<Model>& models = game->Get_Scene().Get_Models();
+	std::vector<Camera>& cameras = game->Get_Scene().Get_Cameras(); 
 
 	if (type == ComponentType::TransformComp) 
 	{
@@ -23,12 +25,18 @@ void Actor::Add_Component(const ComponentType& type)
 		models.push_back(Model(this)); 
 		model_Component = &(models.back()); 
 	}
+	else if (type == ComponentType::CameraComp) 
+	{
+		cameras.push_back(Camera(this)); 
+		camera_component = &(cameras.back());
+	}
 }
 
 void Actor::Remove_Component(const ComponentType& type)
 {
 	std::vector<Transform>& transforms = game->Get_Scene().Get_Transforms(); 
 	std::vector<Model>& models = game->Get_Scene().Get_Models(); 
+	std::vector<Camera>& cameras = game->Get_Scene().Get_Cameras(); 
 
 	if (type == ComponentType::TransformComp) 
 	{
@@ -46,6 +54,15 @@ void Actor::Remove_Component(const ComponentType& type)
 		{
 			models.erase(iter);
 			model_Component = nullptr; 
+		}
+	}
+	else if (type == ComponentType::CameraComp) 
+	{
+		auto iter = std::find(cameras.begin(), cameras.end(), *camera_component); 
+		if (iter != cameras.end()) 
+		{
+			cameras.erase(iter); 
+			camera_component = nullptr; 
 		}
 	}
 }

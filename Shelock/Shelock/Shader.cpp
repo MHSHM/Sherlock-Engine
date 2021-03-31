@@ -75,6 +75,13 @@ void Shader::Create_Shader_Program(const std::string& vertex_shader_path, const 
 	glLinkProgram(shader_program_id);
 }
 
+
+void Shader::Set_Matrix4_Uniform(std::string uniform, glm::mat4& matrix)
+{
+	GLuint location = glGetUniformLocation(shader_program_id, uniform.c_str());
+	glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
+}
+
 void Shader::Bind()
 {
 	glUseProgram(shader_program_id); 

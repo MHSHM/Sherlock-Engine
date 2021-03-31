@@ -38,6 +38,6 @@ private:
 	
 	std::vector<Vertex> vertices; 
 	std::vector<unsigned int> indices;
-	VertexArrayObject VAO; 
+	VertexArrayObject VAO;
 };
 

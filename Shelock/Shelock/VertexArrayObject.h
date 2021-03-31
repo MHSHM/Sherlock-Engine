@@ -16,7 +16,7 @@ public:
 	unsigned int Get_VAO() { return vertex_array_obj_id;  }
 	unsigned int Get_Element_Buffer_Size() { return element_buffer_size; }
 
-	~VertexArrayObject(); 
+	void Clear(); 
 
 private:
 	unsigned int vertex_array_obj_id; 

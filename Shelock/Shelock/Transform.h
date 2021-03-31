@@ -40,6 +40,9 @@ public:
 	void Set_Scale(const float& _scale); 
 	void Set_Rotation(const glm::vec3& _axis, const float& _angle); 
 
+	glm::vec3& Get_Position() { return position; }
+	glm::mat4x4& Get_World_Matrix() { return world_matrix; }
+
 	~Transform(); 
 
 private:

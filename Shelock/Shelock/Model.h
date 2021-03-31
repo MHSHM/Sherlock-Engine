@@ -15,6 +15,10 @@ public:
 
 	std::vector<Mesh>& Get_Meshes() { return meshes;  }
 
+	class Actor* Get_Owner() { return owner; }
+
+	~Model(); 
+
 private:
 	std::vector<Mesh> meshes; 
 };

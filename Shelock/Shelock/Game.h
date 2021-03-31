@@ -36,6 +36,7 @@ private:
 	void Update(); 
 	void Generate_Output(); 
 	bool Initialize_Framebuffers();
+	void Load_Scene_Data();
 
 private:
 	GLFWwindow* window;

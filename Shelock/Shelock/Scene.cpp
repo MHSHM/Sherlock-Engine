@@ -1,5 +1,7 @@
 #include "Scene.h"
 #include "Game.h"
+#include "Camera.h"
+
 
 Scene::Scene(Game* _game):
 	game(_game)

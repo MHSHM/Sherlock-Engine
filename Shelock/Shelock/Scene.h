@@ -4,7 +4,7 @@
 #include "Actor.h"
 #include "Transform.h"
 #include "Model.h"
-
+#include "Camera.h"
 
 #include <vector>
 
@@ -23,8 +23,11 @@ public:
 	std::vector<Actor>& Get_Scene_Actors() { return scene_actors;  }
 	std::vector<Transform>& Get_Transforms() { return scene_nodes_transforms;  }
 	std::vector<Model>& Get_Models() { return scene_nodes_models;  }
-
+	std::vector<Camera>& Get_Cameras() { return scene_cameras; }
 	class Game* Get_Game() { return game; }
+	class SceneNode* Get_Active_Camera() { return camera; }
+
+	void Set_Active_Camera(class SceneNode* _camera) { camera = _camera; }
 
 	~Scene();
 
@@ -34,8 +37,11 @@ private:
 	std::vector<Actor> scene_actors; 
 	std::vector<Transform> scene_nodes_transforms; 
 	std::vector<Model> scene_nodes_models; 
+	std::vector<Camera> scene_cameras; 
 
 	class Game* game; 
 
+	// Active scene camera
+	class SceneNode* camera; 
 };
 

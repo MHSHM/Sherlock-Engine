@@ -24,8 +24,7 @@ public:
 	unsigned int& Get_Framebuffer_Id() { return framebuffer_id; }
 	unsigned int& Get_Depth_Buffer_Id() { return depth_buffer_id; }
 	std::vector<unsigned int>& Get_Color_Attachments() { return color_attachments; }
-
-
+	
 	~Framebuffer(); 
 
 private:

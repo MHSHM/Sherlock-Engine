@@ -13,6 +13,7 @@ static float time_since_last_frame = 0.0f;
 
 #include "Scene.h"
 #include "Loader.h"
+#include "Renderer.h"
 
 class Game 
 {
@@ -27,19 +28,24 @@ public:
 	void Shutdown_Game(); 
 
 	Scene& Get_Scene() { return scene;  }
+	GLFWwindow* Get_Window() { return window; }
+
 
 private:
 	void Process_Input(); 
 	void Update(); 
 	void Generate_Output(); 
-
+	bool Initialize_Framebuffers();
 
 private:
 	GLFWwindow* window;
 
 	Scene scene; 
 	Loader loader; 
-	
+	Renderer renderer;
+
+	// Render targets
+	Framebuffer default_render_target;
 
 	bool game_running; 
 };

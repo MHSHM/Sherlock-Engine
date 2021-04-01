@@ -10,6 +10,8 @@ Scene::Scene(Game* _game):
 	scene_actors.reserve(MAX_SCENE_NODES); 
 	scene_nodes_transforms.reserve(MAX_SCENE_NODES); 
 	scene_nodes_models.reserve(MAX_SCENE_NODES); 
+	scene_cameras.reserve(MAX_SCENE_NODES); 
+	scene_nodes_movements.reserve(MAX_SCENE_NODES); 
 }
 
 SceneNode* Scene::Add_Scene_Node(SceneNode node)

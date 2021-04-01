@@ -25,7 +25,6 @@ struct Rotation
 
 	glm::vec3 axis; 
 	
-	// in degrees
 	float angle; 
 };
 
@@ -36,12 +35,14 @@ public:
 
 	void Update(float delta_time) override;
 
-	void Set_Position(const glm::vec3& _position); 
-	void Set_Scale(const float& _scale); 
-	void Set_Rotation(const glm::vec3& _axis, const float& _angle); 
+	void Set_Position(const glm::vec3 _position); 
+	void Set_Scale(const float _scale); 
+	void Set_Rotation(const Rotation _rotation); 
 
-	glm::vec3& Get_Position() { return position; }
+	glm::vec3 Get_Position() { return position; }
 	glm::mat4x4& Get_World_Matrix() { return world_matrix; }
+	Rotation Get_Rotation() { return rotation; }
+	glm::mat4& Get_Rotation_Matrix() { return rotation_matrix; }
 
 	~Transform(); 
 
@@ -50,6 +51,8 @@ private:
 	glm::vec3 position; 
 	float scale; 
 	Rotation rotation;
+
+	glm::mat4 rotation_matrix; 
 
 	glm::mat4x4 world_matrix; 
 	bool recompute_world_matrix; 

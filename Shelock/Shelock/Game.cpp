@@ -75,6 +75,13 @@ void Game::Update()
 	float delta_time = glfwGetTime() - time_since_last_frame;
 	time_since_last_frame = glfwGetTime();
 
+	std::vector<Movement>& movements = scene.Get_Movements(); 
+
+	for (int i = 0; i < movements.size(); ++i) 
+	{
+		movements[i].Update(delta_time); 
+	}
+
 	std::vector<Transform>& transforms = scene.Get_Transforms(); 
 
 	for (int i = 0; i < transforms.size(); ++i) 
@@ -110,11 +117,13 @@ void Game::Load_Scene_Data()
 	SceneNode* scene_node = loader.Load(scene, "Models/backpack.obj");
 	scene_node->Get_Actor()->Get_Transform_component()->Set_Position(glm::vec3(0.0f, 0.0f, -1.0f));
 	scene_node->Get_Actor()->Get_Transform_component()->Set_Scale(0.3f);
+	scene_node->Get_Actor()->Add_Component(ComponentType::MovementComp); 
 
 	SceneNode* camera = scene.Add_Scene_Node(SceneNode(&scene));
 	camera->Get_Actor()->Add_Component(ComponentType::TransformComp);
 	camera->Get_Actor()->Get_Transform_component()->Set_Position(glm::vec3(0.0f, 0.0f, 0.0f));
 	camera->Get_Actor()->Add_Component(ComponentType::CameraComp);
+	//camera->Get_Actor()->Add_Component(ComponentType::MovementComp); 
 	scene.Set_Active_Camera(camera);
 }
 

@@ -4,7 +4,8 @@ enum class ComponentType
 {
 	TransformComp,
 	ModelComp,
-	CameraComp
+	CameraComp,
+	MovementComp
 };
 
 class Component

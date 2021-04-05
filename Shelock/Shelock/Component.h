@@ -5,7 +5,9 @@ enum class ComponentType
 	TransformComp,
 	ModelComp,
 	CameraComp,
-	MovementComp
+	MovementComp,
+	PointLightComp,
+	SpotLightComp
 };
 
 class Component

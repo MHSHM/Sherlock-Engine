@@ -95,6 +95,20 @@ void Game::Update()
 	{
 		cameras[i].Update(delta_time); 
 	}
+
+	std::vector<PointLight>& point_lights = scene.Get_Point_Lights();
+
+	for (int i = 0; i < point_lights.size(); ++i)
+	{
+		point_lights[i].Update(delta_time);
+	}
+
+	std::vector<SpotLight>& spot_lights = scene.Get_Spot_Lights(); 
+
+	for (int i = 0; i < spot_lights.size(); ++i) 
+	{
+		spot_lights[i].Update(delta_time); 
+	}
 }
 
 void Game::Generate_Output()
@@ -114,16 +128,24 @@ bool Game::Initialize_Framebuffers()
 
 void Game::Load_Scene_Data()
 {
-	SceneNode* scene_node = loader.Load(scene, "Models/backpack.obj");
-	scene_node->Get_Actor()->Get_Transform_component()->Set_Position(glm::vec3(0.0f, 0.0f, -1.0f));
-	scene_node->Get_Actor()->Get_Transform_component()->Set_Scale(0.3f);
-	scene_node->Get_Actor()->Add_Component(ComponentType::MovementComp); 
+	SceneNode* helmet = loader.Load(scene, "Models/HelmetPresentationLightMap.fbx");
+	helmet->Get_Actor()->Get_Transform_component()->Set_Position(glm::vec3(0.0f, 1.0f, -3.0f));
+	helmet->Get_Actor()->Get_Transform_component()->Set_Scale(0.3f);
+	//scene_node->Get_Actor()->Add_Component(ComponentType::MovementComp); 
+
+	SceneNode* backback = loader.Load(scene, "Models/backpack.obj"); 
+	backback->Get_Actor()->Get_Transform_component()->Set_Position(glm::vec3(3.0f, 0.0f, -3.0f));
+	backback->Get_Actor()->Get_Transform_component()->Set_Scale(0.3f);
+	//backback->Get_Actor()->Add_Component(ComponentType::MovementComp); 
+	//backback->Get_Actor()->Add_Component(ComponentType::PointLightComp); 
 
 	SceneNode* camera = scene.Add_Scene_Node(SceneNode(&scene));
 	camera->Get_Actor()->Add_Component(ComponentType::TransformComp);
 	camera->Get_Actor()->Get_Transform_component()->Set_Position(glm::vec3(0.0f, 0.0f, 0.0f));
 	camera->Get_Actor()->Add_Component(ComponentType::CameraComp);
-	//camera->Get_Actor()->Add_Component(ComponentType::MovementComp); 
+	//camera->Get_Actor()->Add_Component(ComponentType::SpotLightComp);
+	//camera->Get_Actor()->Add_Component(ComponentType::PointLightComp); 
+	camera->Get_Actor()->Add_Component(ComponentType::MovementComp); 
 	scene.Set_Active_Camera(camera);
 }
 

@@ -6,7 +6,7 @@
 
 Camera::Camera(Actor* _owner):
 	Component(_owner),
-	near_plane(0.3f),
+	near_plane(0.1f),
 	far_plane(1000.0f),
 	field_of_view(90.0f),
 	camera_forward(glm::vec3(0.0f, 0.0f, -1.0f)),

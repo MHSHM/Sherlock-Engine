@@ -18,13 +18,14 @@ void Renderer::Draw(Scene& scene, Framebuffer& render_target)
 	glEnable(GL_DEPTH_TEST);
 
 
+
+	shaders_table["basic"]->Bind();
+
 	std::vector<Model>& model_comps = scene.Get_Models(); 
-	
+
 	for (auto& model_comp : model_comps) 
 	{
 		std::vector<Mesh>& meshses = model_comp.Get_Meshes(); 
-		
-		shaders_table["basic"]->Bind(); 
 		
 		shaders_table["basic"]->Set_Matrix4_Uniform("u_world_matrix", model_comp.Get_Owner()->Get_Transform_component()->Get_World_Matrix());
 		shaders_table["basic"]->Set_Matrix4_Uniform("u_view_matrix", scene.Get_Active_Camera()->Get_Actor()->Get_Camera_Component()->Get_View()); 

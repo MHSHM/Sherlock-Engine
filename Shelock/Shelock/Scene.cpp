@@ -11,7 +11,9 @@ Scene::Scene(Game* _game):
 	scene_nodes_transforms.reserve(MAX_SCENE_NODES); 
 	scene_nodes_models.reserve(MAX_SCENE_NODES); 
 	scene_cameras.reserve(MAX_SCENE_NODES); 
-	scene_nodes_movements.reserve(MAX_SCENE_NODES); 
+	scene_nodes_movements.reserve(MAX_SCENE_NODES);
+	scene_point_lights.reserve(MAX_SCENE_POINT_LIGHTS); 
+	scene_spot_lights.reserve(MAX_SCENE_SPOT_LIGHTS); 
 }
 
 SceneNode* Scene::Add_Scene_Node(SceneNode node)

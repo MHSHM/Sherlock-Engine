@@ -82,6 +82,18 @@ void Shader::Set_Matrix4_Uniform(std::string uniform, glm::mat4& matrix)
 	glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 }
 
+void Shader::Set_Vec3_Uniform(std::string uniform, glm::vec3 vector)
+{
+	GLuint location = glGetUniformLocation(shader_program_id, uniform.c_str());
+	glUniform3f(location, vector.x, vector.y, vector.z);
+}
+
+void Shader::Set_Float_Uniform(std::string uniform, float val)
+{
+	GLuint location = glGetUniformLocation(shader_program_id, uniform.c_str());
+	glUniform1f(location, val);
+}
+
 void Shader::Bind()
 {
 	glUseProgram(shader_program_id); 

@@ -17,6 +17,8 @@ public:
 	unsigned int& Get_Shader_program() { return shader_program_id; }
 
 	void Set_Matrix4_Uniform(std::string uniform, glm::mat4& matrix);
+	void Set_Vec3_Uniform(std::string uniform, glm::vec3 vector); 
+	void Set_Float_Uniform(std::string uniform, float val); 
 
 	void Bind();
 

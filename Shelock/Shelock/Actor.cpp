@@ -15,6 +15,9 @@ void Actor::Add_Component(const ComponentType& type)
 	std::vector<Model>& models = game->Get_Scene().Get_Models();
 	std::vector<Camera>& cameras = game->Get_Scene().Get_Cameras(); 
 	std::vector<Movement>& movements = game->Get_Scene().Get_Movements(); 
+	std::vector<PointLight>& point_lights = game->Get_Scene().Get_Point_Lights(); 
+	std::vector<SpotLight>& spot_lights = game->Get_Scene().Get_Spot_Lights(); 
+
 
 	if (type == ComponentType::TransformComp) 
 	{
@@ -36,6 +39,14 @@ void Actor::Add_Component(const ComponentType& type)
 		movements.push_back(Movement(this)); 
 		move_component = &(movements.back()); 
 	}
+	else if (type == ComponentType::PointLightComp) 
+	{
+		point_lights.push_back(PointLight(this)); 
+	}
+	else if (type == ComponentType::SpotLightComp) 
+	{
+		spot_lights.push_back(SpotLight(this));
+	}
 }
 
 void Actor::Remove_Component(const ComponentType& type)
@@ -44,6 +55,9 @@ void Actor::Remove_Component(const ComponentType& type)
 	std::vector<Model>& models = game->Get_Scene().Get_Models(); 
 	std::vector<Camera>& cameras = game->Get_Scene().Get_Cameras(); 
 	std::vector<Movement>& movements = game->Get_Scene().Get_Movements();
+	std::vector<PointLight>& point_lights = game->Get_Scene().Get_Point_Lights();
+	std::vector<SpotLight>& spot_lights = game->Get_Scene().Get_Spot_Lights();
+
 
 	if (type == ComponentType::TransformComp) 
 	{
@@ -85,8 +99,5 @@ void Actor::Remove_Component(const ComponentType& type)
 
 Actor::~Actor()
 {
-	transform_component = nullptr; 
-	model_Component = nullptr; 
-	camera_component = nullptr; 
 }
 

@@ -42,7 +42,9 @@ public:
 	glm::vec3 Get_Position() { return position; }
 	glm::mat4x4& Get_World_Matrix() { return world_matrix; }
 	Rotation Get_Rotation() { return rotation; }
-	glm::mat4& Get_Rotation_Matrix() { return rotation_matrix; }
+	glm::vec3& Get_Forward() { return forward; }
+	glm::vec3& Get_Up() { return up; }
+	glm::vec3& Get_Right() { return right; }
 
 	~Transform(); 
 
@@ -52,10 +54,12 @@ private:
 	float scale; 
 	Rotation rotation;
 
-	glm::mat4 rotation_matrix; 
-
 	glm::mat4x4 world_matrix; 
 	bool recompute_world_matrix; 
+
+	glm::vec3 forward; 
+	glm::vec3 up;
+	glm::vec3 right; 
 
 };
 

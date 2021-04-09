@@ -54,8 +54,3 @@ void Transform::Set_Rotation(const Rotation _rotation)
 	recompute_world_matrix = true; 
 	rotation = _rotation;
 }
-
-Transform::~Transform()
-{
-
-}

@@ -18,7 +18,6 @@ public:
 	
 	void Load_Shaders(); 
 
-private:
 	class Game* game;
 
 	std::vector<Shader> shaders; 

@@ -1,15 +1,5 @@
 #pragma once
 
-enum class ComponentType
-{
-	TransformComp,
-	ModelComp,
-	CameraComp,
-	MovementComp,
-	PointLightComp,
-	SpotLightComp
-};
-
 class Component
 {
 public:
@@ -24,7 +14,7 @@ public:
 		return (this == &other);
 	}
 
-protected:
-	Actor* owner; 
+	class Actor* owner; 
+
 };
 

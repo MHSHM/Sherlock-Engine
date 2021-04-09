@@ -15,5 +15,6 @@ PointLight::PointLight(Actor* _owner):
 
 void PointLight::Update(float delta_time)
 {
-	position = owner->Get_Transform_component()->Get_Position();
+	Transform* transform = owner->Get_Component<Transform>();
+	position = transform->position;
 }

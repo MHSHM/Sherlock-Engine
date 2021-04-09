@@ -94,6 +94,12 @@ void Shader::Set_Float_Uniform(std::string uniform, float val)
 	glUniform1f(location, val);
 }
 
+void Shader::Set_Int_Uniform(std::string uniform, int val)
+{
+	GLuint location = glGetUniformLocation(shader_program_id, uniform.c_str());
+	glUniform1i(location, val);
+}
+
 void Shader::Bind()
 {
 	glUseProgram(shader_program_id); 

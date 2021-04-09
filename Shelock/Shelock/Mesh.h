@@ -31,10 +31,6 @@ public:
 
 	Mesh(std::vector<glm::vec3> positions, std::vector<glm::vec3> normals,
 		std::vector<glm::vec2> uv_coords, std::vector<unsigned int> _indices);
-
-	VertexArrayObject& Get_VAO() { return VAO; }
-
-private:
 	
 	std::vector<Vertex> vertices; 
 	std::vector<unsigned int> indices;

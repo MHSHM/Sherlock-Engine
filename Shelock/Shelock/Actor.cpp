@@ -2,102 +2,16 @@
 #include "Game.h"
 
 Actor::Actor(Game* _game):
-	transform_component(nullptr),
-	model_Component(nullptr),
-	camera_component(nullptr),
 	game(_game)
 {
 }
 
-void Actor::Add_Component(const ComponentType& type)
+void Actor::Clear() 
 {
-	std::vector<Transform>& transforms = game->Get_Scene().Get_Transforms();
-	std::vector<Model>& models = game->Get_Scene().Get_Models();
-	std::vector<Camera>& cameras = game->Get_Scene().Get_Cameras(); 
-	std::vector<Movement>& movements = game->Get_Scene().Get_Movements(); 
-	std::vector<PointLight>& point_lights = game->Get_Scene().Get_Point_Lights(); 
-	std::vector<SpotLight>& spot_lights = game->Get_Scene().Get_Spot_Lights(); 
-
-
-	if (type == ComponentType::TransformComp) 
-	{
-		transforms.push_back(Transform(this));
-		transform_component = &(transforms.back());
-	}
-	else if (type == ComponentType::ModelComp) 
-	{
-		models.push_back(Model(this)); 
-		model_Component = &(models.back()); 
-	}
-	else if (type == ComponentType::CameraComp) 
-	{
-		cameras.push_back(Camera(this)); 
-		camera_component = &(cameras.back());
-	}
-	else if (type == ComponentType::MovementComp) 
-	{
-		movements.push_back(Movement(this)); 
-		move_component = &(movements.back()); 
-	}
-	else if (type == ComponentType::PointLightComp) 
-	{
-		point_lights.push_back(PointLight(this)); 
-	}
-	else if (type == ComponentType::SpotLightComp) 
-	{
-		spot_lights.push_back(SpotLight(this));
-	}
+	game->scene.transform_manager.Remove_Component(this, Get_Component<Transform>());
+	game->scene.model_manager.Remove_Component(this, Get_Component<Model>()); 
+	game->scene.camera_manager.Remove_Component(this, Get_Component<Camera>()); 
+	game->scene.movement_manager.Remove_Component(this, Get_Component<Movement>()); 
+	game->scene.point_light_manager.Remove_Component(this, Get_Component<PointLight>()); 
+	game->scene.spot_light_manager.Remove_Component(this, Get_Component<SpotLight>());
 }
-
-void Actor::Remove_Component(const ComponentType& type)
-{
-	std::vector<Transform>& transforms = game->Get_Scene().Get_Transforms(); 
-	std::vector<Model>& models = game->Get_Scene().Get_Models(); 
-	std::vector<Camera>& cameras = game->Get_Scene().Get_Cameras(); 
-	std::vector<Movement>& movements = game->Get_Scene().Get_Movements();
-	std::vector<PointLight>& point_lights = game->Get_Scene().Get_Point_Lights();
-	std::vector<SpotLight>& spot_lights = game->Get_Scene().Get_Spot_Lights();
-
-
-	if (type == ComponentType::TransformComp) 
-	{
-		auto iter = std::find(transforms.begin(), transforms.end(), *transform_component); 
-		if (iter != transforms.end())
-		{
-			transforms.erase(iter); 
-			transform_component = nullptr; 
-		}
-	}
-	else if (type == ComponentType::ModelComp) 
-	{
-		auto iter = std::find(models.begin(), models.end(), *model_Component);
-		if (iter != models.end())
-		{
-			models.erase(iter);
-			model_Component = nullptr; 
-		}
-	}
-	else if (type == ComponentType::CameraComp) 
-	{
-		auto iter = std::find(cameras.begin(), cameras.end(), *camera_component); 
-		if (iter != cameras.end()) 
-		{
-			cameras.erase(iter); 
-			camera_component = nullptr; 
-		}
-	}
-	else if (type == ComponentType::MovementComp) 
-	{
-		auto iter = std::find(movements.begin(), movements.end(), *move_component); 
-		if (iter != movements.end()) 
-		{
-			movements.erase(iter); 
-			move_component = nullptr; 
-		}
-	}
-}
-
-Actor::~Actor()
-{
-}
-

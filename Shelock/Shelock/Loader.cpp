@@ -17,11 +17,12 @@ SceneNode* Loader::Load(Scene& scene, const std::string& path)
 
 	SceneNode* scene_node = scene.Add_Scene_Node(SceneNode(&scene)); 
 
-	scene_node->Get_Actor()->Add_Component(ComponentType::TransformComp); 
+	scene.transform_manager.Add_Component(scene_node->actor); 
+	
+	scene.model_manager.Add_Component(scene_node->actor); 
 
-	scene_node->Get_Actor()->Add_Component(ComponentType::ModelComp); 
-	std::vector<Mesh> meshes = Process_Meshes(); 
-	scene_node->Get_Actor()->Get_Model_Component()->Set_Meshes(meshes); 
+	std::vector<Mesh> meshes = Process_Meshes();
+	scene_node->actor->Get_Component<Model>()->meshes = meshes; 
 
 	return scene_node; 
 }

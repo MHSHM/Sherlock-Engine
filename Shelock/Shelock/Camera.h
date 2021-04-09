@@ -13,10 +13,6 @@ public:
 
 	void Update(float delta_time) override; 
 
-	glm::mat4& Get_View() { return view; }
-	glm::mat4& Get_Projection() { return projection; }
-
-private:
 	float near_plane; 
 	float far_plane;
 

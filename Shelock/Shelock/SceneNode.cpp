@@ -6,8 +6,8 @@ SceneNode::SceneNode(Scene* _scene):
 	scene(_scene)
 {
 	children.reserve(MAX_CHILDREN); 
-	scene->Get_Scene_Actors().emplace_back(Actor(scene->Get_Game())); 
-	actor = &(scene->Get_Scene_Actors().back()); 
+	scene->scene_actors.emplace_back(Actor(scene->game)); 
+	actor = &(scene->scene_actors.back()); 
 }
 
 void SceneNode::Add_Child(SceneNode* child)
@@ -19,13 +19,5 @@ void SceneNode::Add_Child(SceneNode* child)
 void SceneNode::Remove_Child(SceneNode* child)
 {
 	child->parent = nullptr;
-	auto iter = std::find(children.begin(), children.end(), child); 
-	if (iter != children.end()) 
-	{
-		children.erase(iter); 
-	}
-}
-
-SceneNode::~SceneNode()
-{
+	scene->Remove_Scene_Node(child); 
 }

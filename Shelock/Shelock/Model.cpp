@@ -10,6 +10,6 @@ Model::~Model()
 {
 	for (auto& mesh : meshes) 
 	{
-		mesh.Get_VAO().Clear(); 
+		mesh.VAO.Clear(); 
 	}
 }

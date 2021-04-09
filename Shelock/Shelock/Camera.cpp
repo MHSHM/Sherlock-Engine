@@ -17,10 +17,12 @@ Camera::Camera(Actor* _owner):
 
 void Camera::Update(float delta_time)
 {
-	Transform* transform = owner->Get_Transform_component();
+	
+	Transform* transform = owner->Get_Component<Transform>(); 
 
-	view = glm::inverse(transform->Get_World_Matrix());
+	view = glm::inverse(transform->world_matrix);
 
 	float aspect_ratio = 1280.0f / 720.0f; 
 	projection = glm::perspective(glm::radians(field_of_view), aspect_ratio, near_plane, far_plane); 
+	
 }

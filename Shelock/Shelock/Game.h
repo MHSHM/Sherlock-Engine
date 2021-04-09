@@ -27,18 +27,12 @@ public:
 	void Run_Game(); 
 	void Shutdown_Game(); 
 
-	Scene& Get_Scene() { return scene;  }
-	GLFWwindow* Get_Window() { return window; }
-
-
-private:
 	void Process_Input(); 
 	void Update(); 
 	void Generate_Output(); 
 	bool Initialize_Framebuffers();
 	void Load_Scene_Data();
 
-private:
 	GLFWwindow* window;
 
 	Scene scene; 

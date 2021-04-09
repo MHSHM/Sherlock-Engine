@@ -19,6 +19,7 @@ public:
 	void Set_Matrix4_Uniform(std::string uniform, glm::mat4& matrix);
 	void Set_Vec3_Uniform(std::string uniform, glm::vec3 vector); 
 	void Set_Float_Uniform(std::string uniform, float val); 
+	void Set_Int_Uniform(std::string uniform, int val); 
 
 	void Bind();
 

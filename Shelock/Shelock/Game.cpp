@@ -75,40 +75,42 @@ void Game::Update()
 	float delta_time = glfwGetTime() - time_since_last_frame;
 	time_since_last_frame = glfwGetTime();
 
-	std::vector<Movement>& movements = scene.Get_Movements(); 
-
-	for (int i = 0; i < movements.size(); ++i) 
+	/*
+	for (int i = 0; i < scene.scene_actors.size(); ++i) 
 	{
-		movements[i].Update(delta_time); 
+		for (int j = 0; j < scene.scene_actors[i].components.size(); ++j) 
+		{
+			scene.scene_actors[i].components[j]->Update(delta_time); 
+		}
+	}
+	*/
+
+	
+	for (int i = 0; i < scene.movement_manager.components.size(); ++i) 
+	{
+		scene.movement_manager.components[i].Update(delta_time);
 	}
 
-	std::vector<Transform>& transforms = scene.Get_Transforms(); 
-
-	for (int i = 0; i < transforms.size(); ++i) 
+	for (int i = 0; i < scene.transform_manager.components.size(); ++i) 
 	{
-		transforms[i].Update(delta_time); 
+		scene.transform_manager.components[i].Update(delta_time); 
 	}
 
-	std::vector<Camera>& cameras = scene.Get_Cameras(); 
-
-	for (int i = 0; i < cameras.size(); ++i) 
+	for (int i = 0; i < scene.camera_manager.components.size(); ++i) 
 	{
-		cameras[i].Update(delta_time); 
+		scene.camera_manager.components[i].Update(delta_time);
 	}
 
-	std::vector<PointLight>& point_lights = scene.Get_Point_Lights();
-
-	for (int i = 0; i < point_lights.size(); ++i)
+	for (int i = 0; i < scene.point_light_manager.components.size(); i++) 
 	{
-		point_lights[i].Update(delta_time);
+		scene.point_light_manager.components[i].Update(delta_time); 
 	}
 
-	std::vector<SpotLight>& spot_lights = scene.Get_Spot_Lights(); 
-
-	for (int i = 0; i < spot_lights.size(); ++i) 
+	for (int i = 0; i < scene.spot_light_manager.components.size(); ++i) 
 	{
-		spot_lights[i].Update(delta_time); 
+		scene.spot_light_manager.components[i].Update(delta_time); 
 	}
+	
 }
 
 void Game::Generate_Output()
@@ -116,12 +118,11 @@ void Game::Generate_Output()
 	renderer.Draw(scene, default_render_target); 
 
 
-	glfwSwapBuffers(window); 
+ 	glfwSwapBuffers(window); 
 }
 
 bool Game::Initialize_Framebuffers()
 {
-
 
 	return true; 
 }
@@ -129,24 +130,21 @@ bool Game::Initialize_Framebuffers()
 void Game::Load_Scene_Data()
 {
 	SceneNode* helmet = loader.Load(scene, "Models/HelmetPresentationLightMap.fbx");
-	helmet->Get_Actor()->Get_Transform_component()->Set_Position(glm::vec3(0.0f, 1.0f, -3.0f));
-	helmet->Get_Actor()->Get_Transform_component()->Set_Scale(0.3f);
-	//scene_node->Get_Actor()->Add_Component(ComponentType::MovementComp); 
+	helmet->actor->Get_Component<Transform>()->Set_Position(glm::vec3(1.0f, 1.0f, -3.0f)); 
+	helmet->actor->Get_Component<Transform>()->Set_Scale(0.3f);
 
-	SceneNode* backback = loader.Load(scene, "Models/backpack.obj"); 
-	backback->Get_Actor()->Get_Transform_component()->Set_Position(glm::vec3(3.0f, 0.0f, -3.0f));
-	backback->Get_Actor()->Get_Transform_component()->Set_Scale(0.3f);
-	//backback->Get_Actor()->Add_Component(ComponentType::MovementComp); 
-	//backback->Get_Actor()->Add_Component(ComponentType::PointLightComp); 
+	SceneNode* backpack = loader.Load(scene, "Models/backpack.obj");
+	backpack->actor->Get_Component<Transform>()->Set_Position(glm::vec3(-1.0f, 0.0f, -3.0f));
+	backpack->actor->Get_Component<Transform>()->Set_Scale(0.3f);
 
 	SceneNode* camera = scene.Add_Scene_Node(SceneNode(&scene));
-	camera->Get_Actor()->Add_Component(ComponentType::TransformComp);
-	camera->Get_Actor()->Get_Transform_component()->Set_Position(glm::vec3(0.0f, 0.0f, 0.0f));
-	camera->Get_Actor()->Add_Component(ComponentType::CameraComp);
-	//camera->Get_Actor()->Add_Component(ComponentType::SpotLightComp);
-	//camera->Get_Actor()->Add_Component(ComponentType::PointLightComp); 
-	camera->Get_Actor()->Add_Component(ComponentType::MovementComp); 
-	scene.Set_Active_Camera(camera);
+	scene.transform_manager.Add_Component(camera->actor); 
+	camera->actor->Get_Component<Transform>()->Set_Position(glm::vec3(0.0f, 0.0f, 0.0f)); 
+	scene.camera_manager.Add_Component(camera->actor);
+	scene.point_light_manager.Add_Component(camera->actor); 
+	scene.movement_manager.Add_Component(camera->actor);
+	//scene.spot_light_manager.Add_Component(camera->actor); 
+	scene.camera = camera;
 }
 
 

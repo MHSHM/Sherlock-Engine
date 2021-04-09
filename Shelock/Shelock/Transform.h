@@ -38,17 +38,6 @@ public:
 	void Set_Position(const glm::vec3 _position); 
 	void Set_Scale(const float _scale); 
 	void Set_Rotation(const Rotation _rotation); 
-
-	glm::vec3 Get_Position() { return position; }
-	glm::mat4x4& Get_World_Matrix() { return world_matrix; }
-	Rotation Get_Rotation() { return rotation; }
-	glm::vec3& Get_Forward() { return forward; }
-	glm::vec3& Get_Up() { return up; }
-	glm::vec3& Get_Right() { return right; }
-
-	~Transform(); 
-
-private:
 	
 	glm::vec3 position; 
 	float scale; 

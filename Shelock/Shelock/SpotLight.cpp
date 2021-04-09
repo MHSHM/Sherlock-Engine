@@ -12,6 +12,7 @@ SpotLight::SpotLight(Actor* _owner):
 
 void SpotLight::Update(float delta_time) 
 {
-	position = owner->Get_Transform_component()->Get_Position(); 
-	forward = owner->Get_Transform_component()->Get_Forward(); 
+	Transform* transform = owner->Get_Component<Transform>(); 
+	position = transform->position; 
+	forward = transform->forward; 
 }

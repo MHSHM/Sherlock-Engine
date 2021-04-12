@@ -1,4 +1,5 @@
 #include "Framebuffer.h"
+#include "Texture.h"
 
 #include <glew.h>
 #include <iostream>
@@ -19,6 +20,19 @@ bool Framebuffer::Create_Framebuffer(const Layout& layout)
 		glGenFramebuffers(1, &framebuffer_id);
 		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_id);
 
+		Texture color_attachment; 
+		color_attachment.width = 1280; 
+		color_attachment.height = 720;
+		
+		if (!color_attachment.Init(Type::ColorAttachment)) 
+		{
+			std::cerr << "Failed to create color attachment \n"; 
+			return false; 
+		}
+		
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, color_attachment.texture_id, 0);
+
+		/*
 		glGenTextures(1, &color_attachments[0]);
 		glBindTexture(GL_TEXTURE_2D, color_attachments[0]);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1280, 720, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
@@ -26,12 +40,7 @@ bool Framebuffer::Create_Framebuffer(const Layout& layout)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, color_attachments[0], 0);
 		glBindTexture(GL_TEXTURE_2D, GL_COLOR_ATTACHMENT0);
-
-		glGenTextures(1, &depth_buffer_id);
-		glBindTexture(GL_TEXTURE_2D, depth_buffer_id);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, 1280, 720, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depth_buffer_id, 0);
-		glBindTexture(GL_TEXTURE_2D, GL_COLOR_ATTACHMENT0);
+		*/
 
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		{

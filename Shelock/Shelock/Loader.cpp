@@ -2,6 +2,19 @@
 #include "Scene.h"
 
 
+Loader::Loader()
+{
+	textures.reserve(MAX_TEXTURES);
+}
+
+Loader::~Loader()
+{
+	for (auto& p : textures) 
+	{
+		p.second.Clear(); 
+	}
+}
+
 SceneNode* Loader::Load(Scene& scene, const std::string& path)
 {
 	Assimp::Importer importer;
@@ -25,6 +38,26 @@ SceneNode* Loader::Load(Scene& scene, const std::string& path)
 	scene_node->actor->Get_Component<Model>()->meshes = meshes; 
 
 	return scene_node; 
+}
+
+Texture* Loader::Load_Texture(const std::string& path)
+{
+	auto iter = std::find_if(textures.begin(), textures.end(), [&path](std::pair<std::string, Texture> const& elem) { return elem.first == path; });
+
+	if (iter != textures.end()) 
+	{
+		return &(iter->second); 
+	}
+
+	Texture texture; 
+	if (texture.Init(Type::Texture, path)) 
+	{
+		textures.push_back({path, std::move(texture)});
+		return &textures.back().second; 
+	}
+
+	return nullptr; 
+
 }
 
 
@@ -62,7 +95,7 @@ std::vector<Mesh> Loader::Process_Meshes()
 			uv_coords.resize(curr_mesh->mNumVertices);
 			for (int j = 0; j < curr_mesh->mNumVertices; ++j)
 			{
-				uv_coords[j] = glm::vec2(curr_mesh->mTextureCoords[0][0].x, curr_mesh->mTextureCoords[0][0].y);
+				uv_coords[j] = glm::vec2(curr_mesh->mTextureCoords[0][j].x, curr_mesh->mTextureCoords[0][j].y);
 			}
 		}
 		

@@ -110,7 +110,6 @@ void Game::Update()
 	{
 		scene.spot_light_manager.components[i].Update(delta_time); 
 	}
-	
 }
 
 void Game::Generate_Output()
@@ -129,21 +128,24 @@ bool Game::Initialize_Framebuffers()
 
 void Game::Load_Scene_Data()
 {
+	/*
 	SceneNode* helmet = loader.Load(scene, "Models/HelmetPresentationLightMap.fbx");
-	helmet->actor->Get_Component<Transform>()->Set_Position(glm::vec3(1.0f, 1.0f, -3.0f)); 
+	helmet->actor->Get_Component<Transform>()->Set_Position(glm::vec3(0.0f, 0.0f, 0.0f)); 
 	helmet->actor->Get_Component<Transform>()->Set_Scale(0.3f);
-
+	*/
+	
 	SceneNode* backpack = loader.Load(scene, "Models/backpack.obj");
-	backpack->actor->Get_Component<Transform>()->Set_Position(glm::vec3(-1.0f, 0.0f, -3.0f));
+	backpack->actor->Get_Component<Transform>()->Set_Position(glm::vec3(0.0f, 0.0f, -1.0f));
 	backpack->actor->Get_Component<Transform>()->Set_Scale(0.3f);
+	
 
 	SceneNode* camera = scene.Add_Scene_Node(SceneNode(&scene));
-	scene.transform_manager.Add_Component(camera->actor); 
-	camera->actor->Get_Component<Transform>()->Set_Position(glm::vec3(0.0f, 0.0f, 0.0f)); 
 	scene.camera_manager.Add_Component(camera->actor);
-	scene.point_light_manager.Add_Component(camera->actor); 
 	scene.movement_manager.Add_Component(camera->actor);
-	//scene.spot_light_manager.Add_Component(camera->actor); 
+	scene.transform_manager.Add_Component(camera->actor);
+	scene.point_light_manager.Add_Component(camera->actor); 
+	scene.spot_light_manager.Add_Component(camera->actor); 
+	camera->actor->Get_Component<Transform>()->Set_Position(glm::vec3(0.0f, 0.0f, 0.0f));
 	scene.camera = camera;
 }
 

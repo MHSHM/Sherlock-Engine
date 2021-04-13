@@ -8,6 +8,7 @@
 #include "VertexArrayObject.h"
 #include "Shader.h"
 
+
 struct Vertex
 {
 	Vertex() :
@@ -23,6 +24,15 @@ struct Vertex
 	glm::vec2 uv_coord; 
 };
 
+struct Material 
+{
+	class Texture* albedo_map; 
+	class Texture* normal_map; 
+	class Texture* metalic_map; 
+	class Texture* roughness_map; 
+	class Texture* AO_map; 
+};
+
 class Mesh
 {
 public:
@@ -35,5 +45,6 @@ public:
 	std::vector<Vertex> vertices; 
 	std::vector<unsigned int> indices;
 	VertexArrayObject VAO;
+	Material material;
 };
 

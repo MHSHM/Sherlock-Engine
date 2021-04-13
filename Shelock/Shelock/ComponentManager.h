@@ -3,7 +3,7 @@
 #include "Actor.h"
 #include "Transform.h"
 #include "Model.h"
-#include "Camera.h"
+#include "FPSCamera.h"
 #include "Movement.h"
 #include "PointLight.h"
 #include "SpotLight.h"

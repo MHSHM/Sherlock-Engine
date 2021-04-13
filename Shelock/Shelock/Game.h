@@ -43,4 +43,5 @@ public:
 	Framebuffer default_render_target;
 
 	bool game_running; 
+	bool lock_cursor; 
 };

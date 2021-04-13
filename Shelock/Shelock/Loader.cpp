@@ -107,7 +107,10 @@ std::vector<Mesh> Loader::Process_Meshes()
 			indices[(j * 3) + 2] = curr_mesh->mFaces[j].mIndices[2];
 		}
 
-		meshes[i] = Mesh(positions, normals, uv_coords, indices);
+		Mesh mesh(positions, normals, uv_coords, indices); 
+		mesh.material.albedo_map = Load_Texture("Models/diffuse.jpg"); 
+
+		meshes[i] = std::move(mesh);
 	}
 
 	return meshes;

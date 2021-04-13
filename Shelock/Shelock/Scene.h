@@ -16,7 +16,7 @@ public:
 	void Remove_Scene_Node(SceneNode* node);
 
 	ComponentManager<Transform> transform_manager;
-	ComponentManager<Camera> camera_manager;
+	ComponentManager<FPSCamera> FBSCamera_manager;
 	ComponentManager<Movement> movement_manager;
 
 	ComponentManager<Model> model_manager;

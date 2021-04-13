@@ -18,9 +18,9 @@ Movement::Movement(Actor* _owner):
 	}
 }
 
+
 void Movement::Update(float delta_time)
 {
-
 	Transform* transform_component = owner->Get_Component<Transform>(); 
 
 	int forward_state = glfwGetKey(owner->game->window, input_table[forward_key]);
@@ -43,22 +43,20 @@ void Movement::Update(float delta_time)
 
 	// Yaw rotation
 	int ccw_state = glfwGetKey(owner->game->window, input_table[ccw_rotation_key]); 
-	Rotation current_ccw_rotation = transform_component->rotation;
-	current_ccw_rotation.axis = transform_component->up; 
 
 	if (ccw_state == GLFW_PRESS) 
 	{
-		current_ccw_rotation.angle += angular_speed * delta_time;
-		transform_component->Set_Rotation(current_ccw_rotation);
+		glm::mat4 current_yaw_rotation = transform_component->yaw_rotation;
+		glm::mat4 yaw = glm::rotate(angular_speed * delta_time, transform_component->up); 
+		transform_component->Set_Rotation_Yaw(current_yaw_rotation * yaw);
 	}
 
-	int cw_state = glfwGetKey(owner->game->window, input_table[cw_rotation_key]); 
-	Rotation current_cw_rotation = transform_component->rotation;
-	current_cw_rotation.axis = transform_component->up;
-
+	int cw_state = glfwGetKey(owner->game->window, input_table[cw_rotation_key]);
+	
 	if (cw_state == GLFW_PRESS) 
 	{
-		current_cw_rotation.angle += -1.0f * angular_speed * delta_time;
-		transform_component->Set_Rotation(current_cw_rotation); 
+		glm::mat4 current_yaw_rotation = transform_component->yaw_rotation;
+		glm::mat4 yaw = glm::rotate(-angular_speed * delta_time, transform_component->up);
+		transform_component->Set_Rotation_Yaw(current_yaw_rotation * yaw);
 	}
 }

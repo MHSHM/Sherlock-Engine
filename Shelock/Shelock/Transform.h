@@ -37,11 +37,15 @@ public:
 
 	void Set_Position(const glm::vec3 _position); 
 	void Set_Scale(const float _scale); 
-	void Set_Rotation(const Rotation _rotation); 
+	void Set_Rotation_Yaw(const glm::mat4& _yaw); 
+	void Set_Rotation_pitch(const glm::mat4& _pitch); 
+	void Set_Rotation_roll(const glm::mat4& _roll); 
 	
 	glm::vec3 position; 
 	float scale; 
-	Rotation rotation;
+	glm::mat4 yaw_rotation; 
+	glm::mat4 pitch_rotation; 
+	glm::mat4 roll_rotation; 
 
 	glm::mat4x4 world_matrix; 
 	bool recompute_world_matrix; 

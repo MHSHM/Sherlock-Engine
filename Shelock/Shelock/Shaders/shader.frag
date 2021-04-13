@@ -22,6 +22,7 @@ struct Spot_Light
     vec3 color; 
 };
 
+uniform sampler2D diffuse; 
 
 // No. of point lights in scene; 
 uniform int scene_point_lights; 
@@ -32,6 +33,7 @@ uniform Spot_Light spot_lights[MAX_SPOT_LIGHT];
 
 in vec3 o_normal; 
 in vec3 o_position; 
+in vec2 o_uvcoord; 
 
 out vec4 FragColor;
 
@@ -71,6 +73,6 @@ vec3 spotlights_calculations()
 
 void main()
 {
-    vec3 final_color = pointlights_calculations() + spotlights_calculations(); 
-    FragColor = vec4(final_color, 1.0f);
+    vec3 lighting = pointlights_calculations() + spotlights_calculations(); 
+    FragColor = texture(diffuse, o_uvcoord) * vec4(lighting, 1.0f); 
 } 

@@ -28,7 +28,27 @@ void FPSCamera::Update(float delta_time)
 
 	Transform* transform = owner->Get_Component<Transform>();
 
-	if (owner->game->lock_cursor)
+	int ctrl_pressed = glfwGetKey(owner->game->window, GLFW_KEY_LEFT_CONTROL); 
+	int shift_pressed = glfwGetKey(owner->game->window, GLFW_KEY_LEFT_SHIFT); 
+
+	static bool is_cursor_locked = false; 
+	static bool flag = false;
+	
+
+	if (shift_pressed == GLFW_PRESS) 
+	{
+		is_cursor_locked = true; 
+		glfwSetInputMode(owner->game->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	}
+
+	if (ctrl_pressed == GLFW_PRESS) 
+	{
+		is_cursor_locked = false; 
+		flag = false; 
+		glfwSetInputMode(owner->game->window, GLFW_CURSOR, GLFW_CURSOR_NORMAL); 
+	}
+
+	if (is_cursor_locked)
 	{
 
 		static double mouse_x = 0.0, mouse_y = 0.0;
@@ -40,6 +60,13 @@ void FPSCamera::Update(float delta_time)
 
 		double current_x = ((mouse_x - last_x) / 10.0) * delta_time;
 		double current_y = ((mouse_y - last_y) / 10.0) * delta_time; 
+
+		if (!flag) 
+		{
+			current_x = 0.0; 
+			current_y = 0.0; 
+			flag = true; 
+		}
 
 		// cos angle between camera forward and world up
 		float cos_a = glm::dot(forward, glm::vec3(0.0f, 1.0f, 0.0f)); 

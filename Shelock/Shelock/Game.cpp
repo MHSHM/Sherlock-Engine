@@ -68,29 +68,6 @@ void Game::Process_Input()
 	game_running = !glfwWindowShouldClose(window); 
 
 	glfwPollEvents();
-
-
-	int ctrl_state = glfwGetKey(window, GLFW_KEY_LEFT_CONTROL); 
-	int shift_state = glfwGetKey(window, GLFW_KEY_LEFT_SHIFT); 
-
-	if (ctrl_state == GLFW_PRESS)
-	{
-		lock_cursor = true; 
-	}
-
-	if (shift_state == GLFW_PRESS) 
-	{
-		lock_cursor = false; 
-	}
-
-	if (lock_cursor) 
-	{
-		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	}
-	else 
-	{
-		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-	}
 }
 
 void Game::Update()

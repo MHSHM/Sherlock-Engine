@@ -21,6 +21,7 @@ SceneNode* Loader::Load(Scene& scene, const std::string& path)
 
 	 imported_scene = importer.ReadFile(path,
 		aiProcess_Triangulate |
+		 aiProcess_CalcTangentSpace |
 		aiProcess_JoinIdenticalVertices);
 
 	if (!imported_scene) {

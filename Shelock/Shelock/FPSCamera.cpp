@@ -92,7 +92,6 @@ void FPSCamera::Update(float delta_time)
 		right = glm::normalize(glm::cross(forward, up));
 		forward = glm::normalize(glm::rotate(forward, float(-current_y), right));
 
-
 		int forward_state = glfwGetKey(owner->game->window, GLFW_KEY_W);
 		if (forward_state == GLFW_PRESS) transform->Set_Position(transform->position + (forward_speed * forward * delta_time));
 
@@ -105,6 +104,8 @@ void FPSCamera::Update(float delta_time)
 		int right_state = glfwGetKey(owner->game->window, GLFW_KEY_D);
 		if (right_state == GLFW_PRESS) transform->Set_Position(transform->position + (forward_speed * right * delta_time));
 	}
+
+	transform->forward = forward; 
 
 	view = glm::lookAt(transform->position, forward * 1000.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 

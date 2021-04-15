@@ -8,7 +8,7 @@ public:
 	
 	VertexArrayObject() = default; 
 
-	void Init(std::vector<struct Vertex>& vertices, std::vector<unsigned int>& indices); 
+	void Init(std::vector<struct Vertex>& vertices, std::vector<unsigned int>& indices);
 
 	void Bind(); 
 	void Un_Bind(); 

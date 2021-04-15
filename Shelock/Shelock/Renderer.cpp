@@ -62,7 +62,10 @@ void Renderer::Draw(Scene& scene, Framebuffer& render_target)
 		for (auto& mesh : meshses) 
 		{
 			mesh.material.albedo_map->Bind(0); 
-			shaders_table["basic"]->Set_Int_Uniform("diffuse", 0);
+			shaders_table["basic"]->Set_Int_Uniform("surface_material.albedo", 0);
+			
+			mesh.material.normal_map->Bind(1); 
+			shaders_table["basic"]->Set_Int_Uniform("surface_material.normals", 1);
 
 			mesh.VAO.Bind(); 
 			glDrawElements(GL_TRIANGLES, mesh.VAO.Get_Element_Buffer_Size(), GL_UNSIGNED_INT, nullptr); 

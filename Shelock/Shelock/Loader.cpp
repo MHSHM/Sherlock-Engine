@@ -73,6 +73,7 @@ std::vector<Mesh> Loader::Process_Meshes()
 		std::vector<glm::vec3> positions;
 		std::vector<glm::vec3> normals;
 		std::vector<glm::vec2> uv_coords;
+		std::vector<glm::vec3> tangents; 
 		std::vector<unsigned int> indices;
 
 		positions.resize(curr_mesh->mNumVertices);
@@ -99,6 +100,15 @@ std::vector<Mesh> Loader::Process_Meshes()
 			}
 		}
 		
+		if (curr_mesh->HasTangentsAndBitangents()) 
+		{
+			tangents.resize(curr_mesh->mNumVertices);
+			for (int j = 0; j < curr_mesh->mNumVertices; ++j) 
+			{
+				tangents[j] = glm::vec3(curr_mesh->mTangents[j].x, curr_mesh->mTangents[j].y, curr_mesh->mTangents[j].z);
+			}
+		}
+
 		indices.resize(curr_mesh->mNumFaces * 3);
 		for (int j = 0; j < curr_mesh->mNumFaces; ++j)
 		{
@@ -107,8 +117,9 @@ std::vector<Mesh> Loader::Process_Meshes()
 			indices[(j * 3) + 2] = curr_mesh->mFaces[j].mIndices[2];
 		}
 
-		Mesh mesh(positions, normals, uv_coords, indices); 
+		Mesh mesh(positions, normals, uv_coords, tangents, indices); 
 		mesh.material.albedo_map = Load_Texture("Models/diffuse.jpg"); 
+		mesh.material.normal_map = Load_Texture("Models/normal.png"); 
 
 		meshes[i] = std::move(mesh);
 	}

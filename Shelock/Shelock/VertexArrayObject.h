@@ -2,13 +2,21 @@
 
 #include <vector>
 
+enum class VertexLayout
+{
+	Position = 0, 
+	PositionNormal = 1,
+	PositionNormalUV = 2, 
+	PositionNormalUVTangent = 3
+};
+
 class VertexArrayObject
 {
 public:
 	
 	VertexArrayObject() = default; 
 
-	void Init(std::vector<struct Vertex>& vertices, std::vector<unsigned int>& indices);
+	void Init(std::vector<struct Vertex>& vertices, std::vector<unsigned int>& indices, const VertexLayout& layout);
 
 	void Bind(); 
 	void Un_Bind(); 

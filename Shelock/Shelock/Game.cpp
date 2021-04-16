@@ -46,6 +46,8 @@ bool Game::Initialize()
 		return false; 
 	}
 
+	scene.Init();
+
 	renderer.Load_Shaders(); 
 
 	Load_Scene_Data(); 
@@ -130,16 +132,16 @@ bool Game::Initialize_Framebuffers()
 
 void Game::Load_Scene_Data()
 {
-	/*
+	
 	SceneNode* helmet = loader.Load(scene, "Models/HelmetPresentationLightMap.fbx");
 	helmet->actor->Get_Component<Transform>()->Set_Position(glm::vec3(0.0f, 0.0f, 0.0f)); 
 	helmet->actor->Get_Component<Transform>()->Set_Scale(1.0f);
-	*/
-
+	
+	/*
 	SceneNode* backpack = loader.Load(scene, "Models/backpack.obj");
 	backpack->actor->Get_Component<Transform>()->Set_Position(glm::vec3(-5.0f, -1.0f, -1.0f));
 	backpack->actor->Get_Component<Transform>()->Set_Scale(1.0f);
-	
+	*/
 
 	SceneNode* camera = scene.Add_Scene_Node(SceneNode(&scene));
 	scene.FBSCamera_manager.Add_Component(camera->actor);

@@ -14,7 +14,8 @@ struct Vertex
 	Vertex() :
 		position(glm::vec3(0.0f, 0.0f, 0.0f)),
 		normal(glm::vec3(0.0f, 0.0f, 0.0f)),
-		uv_coord(glm::vec2(0.0f, 0.0f)) 
+		uv_coord(glm::vec2(0.0f, 0.0f)),
+		tangent(glm::vec3(0.0f, 0.0f, 0.0f))
 	{
 		
 	}

@@ -7,9 +7,13 @@ Mesh::Mesh(std::vector<glm::vec3> positions, std::vector<glm::vec3> normals,
 	uint32_t num_vertices = positions.size();
 	vertices.resize(num_vertices); 
 
+	int layout = 0; 
+
 	bool has_normals = (normals.size() > 0); 
 	bool has_uvs = (uv_coords.size() > 0); 
 	bool has_tangents = (tangents.size() > 0); 
+
+	layout = has_normals + has_uvs + has_tangents;
 
 	for (int i = 0; i < num_vertices; ++i) 
 	{
@@ -26,14 +30,14 @@ Mesh::Mesh(std::vector<glm::vec3> positions, std::vector<glm::vec3> normals,
 		{
 			vertex.uv_coord = uv_coords[i]; 
 		}
-
+		
 		if (has_tangents) 
 		{
 			vertex.tangent = tangents[i]; 
 		}
-
+		
 		vertices[i] = std::move(vertex);
 	}
 
-	VAO.Init(vertices, indices); 
+	VAO.Init(vertices, indices, static_cast<VertexLayout>(layout));
 }

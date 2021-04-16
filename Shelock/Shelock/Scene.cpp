@@ -6,14 +6,19 @@
 Scene::Scene(Game* _game):
 	game(_game)
 {
-	scene_nodes.reserve(MAX_SCENE_NODES); 
+}
+
+void Scene::Init()
+{
+	scene_nodes.reserve(MAX_SCENE_NODES);
 	scene_actors.reserve(MAX_SCENE_NODES);
-	transform_manager.Init(); 
+	transform_manager.Init();
 	FBSCamera_manager.Init();
-	movement_manager.Init(); 
-	model_manager.Init(); 
-	point_light_manager.Init(); 
-	spot_light_manager.Init(); 
+	movement_manager.Init();
+	model_manager.Init();
+	point_light_manager.Init();
+	spot_light_manager.Init();
+	sky_box.Init({});
 }
 
 SceneNode* Scene::Add_Scene_Node(SceneNode node)

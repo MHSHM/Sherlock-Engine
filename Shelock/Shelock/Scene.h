@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SceneNode.h"
+#include "SkyBox.h"
 #include "ComponentManager.h"
 
 #include <vector>
@@ -11,6 +12,8 @@ class Scene
 {
 public:
 	Scene(class Game* _game);
+
+	void Init(); 
 
 	SceneNode* Add_Scene_Node(SceneNode node);
 	void Remove_Scene_Node(SceneNode* node);
@@ -30,6 +33,8 @@ public:
 
 	// Active scene camera
 	class SceneNode* camera;
+
+	SkyBox sky_box; 
 
 	~Scene();
 };

@@ -15,13 +15,40 @@ void Renderer::Draw(Scene& scene, Framebuffer& render_target)
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glEnable(GL_DEPTH_TEST);
+	glDisable(GL_DEPTH_TEST);
 
+	// Draw Skybox
+	shaders_table["skybox"]->Bind(); 
+	
+	glm::mat4 world = glm::mat4(1.0f); 
+	glm::mat4 view  = scene.camera->actor->Get_Component<FPSCamera>()->view;
+	glm::mat4 projection = scene.camera->actor->Get_Component<FPSCamera>()->projection; 
+
+	shaders_table["skybox"]->Set_Matrix4_Uniform("u_world", world);
+	shaders_table["skybox"]->Set_Matrix4_Uniform("u_view", view);
+	shaders_table["skybox"]->Set_Matrix4_Uniform("u_projection", projection);
+
+	scene.sky_box.cube_map.Bind(0); 
+	scene.sky_box.vao.Bind(); 
+
+	glDrawElements(GL_TRIANGLES, scene.sky_box.vao.Get_Element_Buffer_Size(), GL_UNSIGNED_INT, nullptr);
+
+	scene.sky_box.cube_map.Un_Bind(); 
+	scene.sky_box.vao.Un_Bind();
+
+	// Draw Scene
+	glEnable(GL_DEPTH_TEST);
 	shaders_table["basic"]->Bind();
 
 	shaders_table["basic"]->Set_Int_Uniform("scene_point_lights", scene.point_light_manager.components.size()); 
 	shaders_table["basic"]->Set_Int_Uniform("scene_spot_light", scene.spot_light_manager.components.size()); 
 	
+	shaders_table["basic"]->Set_Matrix4_Uniform("u_view_matrix", view);
+	shaders_table["basic"]->Set_Matrix4_Uniform("u_projection_matrix", projection);
+	
+	shaders_table["basic"]->Set_Vec3_Uniform("dir_light.direction", scene.dir_light->actor->Get_Component<DirectionalLight>()->direction);
+	shaders_table["basic"]->Set_Vec3_Uniform("dir_light.color", scene.dir_light->actor->Get_Component<DirectionalLight>()->color);
+
 	for (int i = 0; i < scene.point_light_manager.components.size(); ++i)
 	{
 		std::string index = std::to_string(i); 
@@ -53,11 +80,8 @@ void Renderer::Draw(Scene& scene, Framebuffer& render_target)
 		std::vector<Mesh>& meshses = model_comp.meshes; 
 		
 		Transform* transform = model_comp.owner->Get_Component<Transform>();
-		FPSCamera* camera = scene.camera->actor->Get_Component<FPSCamera>();
 
 		shaders_table["basic"]->Set_Matrix4_Uniform("u_world_matrix", transform->world_matrix);
-		shaders_table["basic"]->Set_Matrix4_Uniform("u_view_matrix", camera->view);
-		shaders_table["basic"]->Set_Matrix4_Uniform("u_projection_matrix", camera->projection);
 
 		for (auto& mesh : meshses) 
 		{
@@ -68,7 +92,9 @@ void Renderer::Draw(Scene& scene, Framebuffer& render_target)
 			shaders_table["basic"]->Set_Int_Uniform("surface_material.normals", 1);
 
 			mesh.VAO.Bind(); 
-			glDrawElements(GL_TRIANGLES, mesh.VAO.Get_Element_Buffer_Size(), GL_UNSIGNED_INT, nullptr); 
+			glDrawElements(GL_TRIANGLES, mesh.VAO.Get_Element_Buffer_Size(), GL_UNSIGNED_INT, nullptr);
+
+			mesh.VAO.Un_Bind();
 		}
 	}
 
@@ -77,8 +103,16 @@ void Renderer::Draw(Scene& scene, Framebuffer& render_target)
 
 void Renderer::Load_Shaders()
 {
+
+	shaders.reserve(10); 
+
 	Shader shader;
 	shader.Create_Shader_Program("Shaders/shader.vert", "Shaders/shader.frag");
 	shaders.push_back(std::move(shader)); 
 	shaders_table["basic"] = &(shaders.back());
+
+	Shader skybox; 
+	skybox.Create_Shader_Program("Shaders/Skybox.vert", "Shaders/Skybox.frag");
+	shaders.push_back(std::move(skybox)); 
+	shaders_table["skybox"] = &(shaders.back());
 }

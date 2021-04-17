@@ -16,7 +16,7 @@ FPSCamera::FPSCamera(Actor* _owner):
 	far_plane(1000.0f),
 	field_of_view(90.0f),
 	sensitivity(10.0f),
-	forward_speed(2.0f),
+	forward_speed(5.0f),
 	forward(glm::vec3(0.0f, 0.0f, -1.0f)),
 	up(glm::vec3(0.0f, 1.0f, 0.0f)),
 	right(glm::vec3(1.0f, 0.0f, 0.0f))
@@ -58,8 +58,8 @@ void FPSCamera::Update(float delta_time)
 
 		glfwGetCursorPos(owner->game->window, &mouse_x, &mouse_y);
 
-		double current_x = ((mouse_x - last_x) / 10.0) * delta_time;
-		double current_y = ((mouse_y - last_y) / 10.0) * delta_time; 
+		double current_x = ((mouse_x - last_x) / sensitivity) * delta_time;
+		double current_y = ((mouse_y - last_y) / sensitivity) * delta_time; 
 
 		if (!flag) 
 		{

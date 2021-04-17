@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="FPSCamera.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentManager.cpp" />
@@ -175,6 +176,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
+    <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="FPSCamera.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentManager.h" />

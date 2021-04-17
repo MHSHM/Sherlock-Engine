@@ -7,6 +7,8 @@
 #include "Movement.h"
 #include "PointLight.h"
 #include "SpotLight.h"
+#include "DirectionalLight.h"
+
 
 #include <vector>
 

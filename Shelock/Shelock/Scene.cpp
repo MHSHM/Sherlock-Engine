@@ -18,7 +18,13 @@ void Scene::Init()
 	model_manager.Init();
 	point_light_manager.Init();
 	spot_light_manager.Init();
-	sky_box.Init({});
+	directional_light_manager.Init(); 
+
+	sky_box.Init(
+		{ "Skybox/posx.jpg", "Skybox/negx.jpg", 
+		  "Skybox/posy.jpg", "Skybox/negy.jpg",
+		  "Skybox/posz.jpg", "Skybox/negz.jpg"}
+	);
 }
 
 SceneNode* Scene::Add_Scene_Node(SceneNode node)

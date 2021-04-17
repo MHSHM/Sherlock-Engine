@@ -22,9 +22,11 @@ public:
 	ComponentManager<FPSCamera> FBSCamera_manager;
 	ComponentManager<Movement> movement_manager;
 
+	// Rendering
 	ComponentManager<Model> model_manager;
 	ComponentManager<PointLight> point_light_manager;
 	ComponentManager<SpotLight> spot_light_manager;
+	ComponentManager<DirectionalLight> directional_light_manager; 
 
 	std::vector<SceneNode> scene_nodes;
 	std::vector<Actor> scene_actors;
@@ -33,8 +35,11 @@ public:
 
 	// Active scene camera
 	class SceneNode* camera;
+	class SceneNode* dir_light; 
 
 	SkyBox sky_box; 
+
+	
 
 	~Scene();
 };

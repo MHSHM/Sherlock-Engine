@@ -3,6 +3,12 @@
 const int MAX_POINT_LIGHT = 10; 
 const int MAX_SPOT_LIGHT = 10; 
 
+struct Directional_Light 
+{
+    vec3 direction; 
+    vec3 color; 
+}; 
+
 struct Point_Light 
 {
     vec3 position; 
@@ -35,6 +41,8 @@ uniform Point_Light point_lights[MAX_POINT_LIGHT];
 uniform int scene_spot_light; 
 uniform Spot_Light spot_lights[MAX_SPOT_LIGHT]; 
 
+uniform Directional_Light dir_light; 
+
 in vec3 o_normal; 
 in vec3 o_position; 
 in vec2 o_uvcoord; 
@@ -54,7 +62,7 @@ vec3 Get_Normal()
     return frag_normal; 
 }
 
-vec3 pointlights_calculations(vec3 mapped_normal)
+vec3 Pointlights_Calculations(vec3 mapped_normal, vec3 ambient_color)
 {
     vec3 color = vec3(0.0f, 0.0f, 0.0f); 
     for(int i = 0; i < scene_point_lights; ++i)
@@ -71,7 +79,7 @@ vec3 pointlights_calculations(vec3 mapped_normal)
 
 }
 
-vec3 spotlights_calculations(vec3 mapped_normal)
+vec3 Spotlights_Calculations(vec3 mapped_normal, vec3 ambient_color)
 {
     vec3 color = vec3(0.0f, 0.0f, 0.0f);
     for(int i = 0; i < scene_spot_light; ++i)
@@ -90,9 +98,20 @@ vec3 spotlights_calculations(vec3 mapped_normal)
     return color; 
 }
 
+vec3 Directional_light_Calculations(vec3 mapped_normal, vec3 ambient_color)
+{
+    float angle = max(dot(dir_light.direction, mapped_normal), 0.0f);
+    return vec3(texture(surface_material.albedo, o_uvcoord)) + (dir_light.color * angle); 
+}
+
 void main()
 {
-    vec3 mapped_normal = Get_Normal(); 
-    vec3 lighting = pointlights_calculations(mapped_normal) + spotlights_calculations(mapped_normal); 
-    FragColor = texture(surface_material.albedo, o_uvcoord) * vec4(lighting, 1.0f); 
+    vec3 mapped_normal = Get_Normal();
+    vec3 ambient_color = vec3(texture(surface_material.albedo, o_uvcoord)); 
+    
+    vec3 lighting = Pointlights_Calculations(mapped_normal, ambient_color) + 
+        Spotlights_Calculations(mapped_normal, ambient_color) + 
+        Directional_light_Calculations(mapped_normal, ambient_color); 
+    
+    FragColor = vec4(ambient_color, 1.0f) * vec4(lighting, 1.0f); 
 } 

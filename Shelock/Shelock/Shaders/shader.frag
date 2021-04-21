@@ -72,7 +72,7 @@ vec3 Pointlights_Calculations(vec3 mapped_normal, vec3 ambient_color)
         float d = length(light_direction); 
         float d_squared = d * d; 
         float attenution = 1.0f / (min(point_lights[i].radius, d) + (d * point_lights[i].linear) + (point_lights[i].quadratic * d_squared));
-        color += angle * attenution * point_lights[i].color; 
+        color += angle * attenution * ambient_color; 
     }
 
     return color; 
@@ -93,7 +93,7 @@ vec3 Spotlights_Calculations(vec3 mapped_normal, vec3 ambient_color)
         float t = clamp(numerator / denominator, 0.0f, 1.0f);
         float t_squared = t * t; 
         float t_smooth = t_squared * (3.0f - 2.0f * t); 
-        color += angle * t_smooth * spot_lights[i].color; 
+        color += angle * t_smooth * spot_lights[i].color * ambient_color; 
     }
     return color; 
 }
@@ -101,17 +101,19 @@ vec3 Spotlights_Calculations(vec3 mapped_normal, vec3 ambient_color)
 vec3 Directional_light_Calculations(vec3 mapped_normal, vec3 ambient_color)
 {
     float angle = max(dot(dir_light.direction, mapped_normal), 0.0f);
-    return vec3(texture(surface_material.albedo, o_uvcoord)) + (dir_light.color * angle); 
+    return dir_light.color * angle; 
 }
 
 void main()
 {
+    float gamma = 2.2f; 
     vec3 mapped_normal = Get_Normal();
     vec3 ambient_color = vec3(texture(surface_material.albedo, o_uvcoord)); 
+    ambient_color = pow(ambient_color, vec3(gamma));
     
     vec3 lighting = Pointlights_Calculations(mapped_normal, ambient_color) + 
-        Spotlights_Calculations(mapped_normal, ambient_color) + 
-        Directional_light_Calculations(mapped_normal, ambient_color); 
+        Spotlights_Calculations(mapped_normal, ambient_color);  
     
-    FragColor = vec4(ambient_color, 1.0f) * vec4(lighting, 1.0f); 
+    FragColor = vec4(lighting, 1.0f);
+    FragColor.rgb = pow(FragColor.rgb, vec3(1.0f / gamma)); 
 } 

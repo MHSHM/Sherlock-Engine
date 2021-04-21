@@ -119,8 +119,8 @@ std::vector<Mesh> Loader::Process_Meshes()
 		}
 
 		Mesh mesh(positions, normals, uv_coords, tangents, indices); 
-		mesh.material.albedo_map = Load_Texture("Models/diffuse.jpg"); 
-		mesh.material.normal_map = Load_Texture("Models/normal.png"); 
+		mesh.material.albedo_map = Load_Texture("Models/BaseColor.png"); 
+		mesh.material.normal_map = Load_Texture("Models/NormalMap.png"); 
 
 		meshes[i] = std::move(mesh);
 	}

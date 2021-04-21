@@ -15,29 +15,13 @@ void Renderer::Draw(Scene& scene, Framebuffer& render_target)
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glDisable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST); 
+	glDepthFunc(GL_LESS);	
 
-	// Draw Skybox
-	shaders_table["skybox"]->Bind(); 
-	
-	glm::mat4 world = glm::mat4(1.0f); 
-	glm::mat4 view  = scene.camera->actor->Get_Component<FPSCamera>()->view;
-	glm::mat4 projection = scene.camera->actor->Get_Component<FPSCamera>()->projection; 
-
-	shaders_table["skybox"]->Set_Matrix4_Uniform("u_world", world);
-	shaders_table["skybox"]->Set_Matrix4_Uniform("u_view", view);
-	shaders_table["skybox"]->Set_Matrix4_Uniform("u_projection", projection);
-
-	scene.sky_box.cube_map.Bind(0); 
-	scene.sky_box.vao.Bind(); 
-
-	glDrawElements(GL_TRIANGLES, scene.sky_box.vao.Get_Element_Buffer_Size(), GL_UNSIGNED_INT, nullptr);
-
-	scene.sky_box.cube_map.Un_Bind(); 
-	scene.sky_box.vao.Un_Bind();
+	glm::mat4 view = scene.camera->actor->Get_Component<FPSCamera>()->view;
+	glm::mat4 projection = scene.camera->actor->Get_Component<FPSCamera>()->projection;
 
 	// Draw Scene
-	glEnable(GL_DEPTH_TEST);
 	shaders_table["basic"]->Bind();
 
 	shaders_table["basic"]->Set_Int_Uniform("scene_point_lights", scene.point_light_manager.components.size()); 
@@ -98,12 +82,27 @@ void Renderer::Draw(Scene& scene, Framebuffer& render_target)
 		}
 	}
 
+	// Draw Skybox
+	glDepthFunc(GL_LEQUAL);
+
+	shaders_table["skybox"]->Bind();
+
+	shaders_table["skybox"]->Set_Matrix4_Uniform("u_view", view);
+	shaders_table["skybox"]->Set_Matrix4_Uniform("u_projection", projection);
+
+	scene.sky_box.cube_map.Bind(0);
+	scene.sky_box.vao.Bind();
+
+	glDrawElements(GL_TRIANGLES, scene.sky_box.vao.Get_Element_Buffer_Size(), GL_UNSIGNED_INT, nullptr);
+
+	scene.sky_box.cube_map.Un_Bind();
+	scene.sky_box.vao.Un_Bind();
+
 	render_target.Un_Bind(); 
 }
 
 void Renderer::Load_Shaders()
 {
-
 	shaders.reserve(10); 
 
 	Shader shader;

@@ -6,7 +6,9 @@
 enum class Type 
 {
 	Texture,
-	ColorAttachment
+	ColorAttachmentRGB, 
+	ColorAttachmentRGB16bit,
+	ColorAttachmentRGB32bit
 };
 
 

@@ -14,6 +14,7 @@ static float time_since_last_frame = 0.0f;
 #include "Scene.h"
 #include "Loader.h"
 #include "Renderer.h"
+#include "Quad.h"
 
 class Game 
 {
@@ -41,6 +42,8 @@ public:
 
 	// Render targets
 	Framebuffer default_render_target;
+	Framebuffer hdr_render_target; 
+	Quad quad; 
 
 	bool game_running; 
 	bool lock_cursor; 

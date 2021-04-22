@@ -123,30 +123,38 @@ void Game::Update()
 
 void Game::Generate_Output()
 {
-	renderer.Draw(scene, default_render_target); 
+	renderer.Draw(scene, hdr_render_target);
 
+	renderer.Draw_To_Quad(hdr_render_target.color_attachments.back(), quad, default_render_target);
 
  	glfwSwapBuffers(window); 
 }
 
 bool Game::Initialize_Framebuffers()
 {
+	if (!hdr_render_target.Init(Layout::Color16fDepth))
+	{
+		std::cerr << "failed to initialize hdr render taget \n";
+		return false; 
+	}
+
+	quad.Init(); 
 
 	return true; 
 }
 
 void Game::Load_Scene_Data()
 {
-	/*
+	
 	SceneNode* helmet = loader.Load(scene, "Models/HelmetPresentationLightMap.fbx");
 	helmet->actor->Get_Component<Transform>()->Set_Position(glm::vec3(0.0f, 0.0f, 0.0f)); 
 	helmet->actor->Get_Component<Transform>()->Set_Scale(1.0f);
-	*/
 	
+	/*
 	SceneNode* backpack = loader.Load(scene, "Models/backpack.obj");
 	backpack->actor->Get_Component<Transform>()->Set_Position(glm::vec3(-5.0f, -1.0f, -1.0f));
 	backpack->actor->Get_Component<Transform>()->Set_Scale(1.0f);
-	
+	*/
 
 	SceneNode* camera = scene.Add_Scene_Node(SceneNode(&scene));
 	scene.FBSCamera_manager.Add_Component(camera->actor);
@@ -155,6 +163,16 @@ void Game::Load_Scene_Data()
 	camera->actor->Get_Component<Transform>()->Set_Position(glm::vec3(0.0f, 0.0f, 2.0f));
 	
 	scene.camera = camera;
+
+	SceneNode* p1 = scene.Add_Scene_Node(SceneNode(&scene)); 
+	scene.transform_manager.Add_Component(p1->actor);
+	scene.point_light_manager.Add_Component(p1->actor); 
+	p1->actor->Get_Component<Transform>()->Set_Position(glm::vec3(1.0f, 0.0f, 0.0f));
+	
+	SceneNode* p2 = scene.Add_Scene_Node(SceneNode(&scene)); 
+	scene.transform_manager.Add_Component(p2->actor);
+	scene.point_light_manager.Add_Component(p2->actor); 
+	p2->actor->Get_Component<Transform>()->Set_Position(glm::vec3(-1.0f, 0.0f, 0.0f)); 
 
 	SceneNode* dir_light = scene.Add_Scene_Node(SceneNode(&scene));
 	scene.transform_manager.Add_Component(dir_light->actor); 
@@ -168,6 +186,7 @@ void Game::Load_Scene_Data()
 void Game::Shutdown_Game()
 {
 	glfwTerminate();
+	renderer.Clear(); 
 }
 
 Game::~Game() 

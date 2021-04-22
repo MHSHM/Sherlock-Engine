@@ -42,7 +42,7 @@ bool Texture::Init(const Type& type, std::string path)
 		}
 	break;
 
-	case Type::ColorAttachment: 
+	case Type::ColorAttachmentRGB:
 	{
 
 		glGenTextures(1, &texture_id);
@@ -58,6 +58,20 @@ bool Texture::Init(const Type& type, std::string path)
 		Un_Bind(); 
 	}
 	break;
+
+	case Type::ColorAttachmentRGB16bit:
+	{
+		glGenTextures(1, &texture_id);
+		glBindTexture(GL_TEXTURE_2D, texture_id);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
+
+		Un_Bind();
+	}
+	break; 
 }
 
 	return true; 

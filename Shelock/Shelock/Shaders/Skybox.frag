@@ -8,5 +8,10 @@ out vec4 FragColor;
 
 void main()
 {
-	FragColor = texture(skybox, o_tex_coord); 
+	float gamma = 2.2f;
+	
+	vec3 color = texture(skybox, o_tex_coord).rgb;
+	color = pow(color, vec3(gamma)); 
+	
+	FragColor = vec4(color, 1.0f); 
 }

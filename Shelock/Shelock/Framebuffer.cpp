@@ -10,46 +10,77 @@ Framebuffer::Framebuffer():
 {
 }
 
-bool Framebuffer::Create_Framebuffer(const Layout& layout)
+bool Framebuffer::Init(const Layout& layout)
 {
-	color_attachments.resize(MAX_COLOR_ATTACHMENTS);
+	color_attachments.reserve(MAX_COLOR_ATTACHMENTS);
 
-	if (layout == Layout::ColorDepth)
+	glGenFramebuffers(1, &framebuffer_id);
+	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_id);
+
+	switch (layout)
 	{
-
-		glGenFramebuffers(1, &framebuffer_id);
-		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_id);
-
-		Texture color_attachment; 
-		color_attachment.width = 1280; 
-		color_attachment.height = 720;
-		
-		if (!color_attachment.Init(Type::ColorAttachment)) 
+		case Layout::ColorDepth: 
 		{
-			std::cerr << "Failed to create color attachment \n"; 
-			return false; 
-		}
-		
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, color_attachment.texture_id, 0);
+			Texture color_attachment;
+			color_attachment.width = 1280;
+			color_attachment.height = 720;
 
-		/*
-		glGenTextures(1, &color_attachments[0]);
-		glBindTexture(GL_TEXTURE_2D, color_attachments[0]);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1280, 720, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, color_attachments[0], 0);
-		glBindTexture(GL_TEXTURE_2D, GL_COLOR_ATTACHMENT0);
-		*/
+			if (!color_attachment.Init(Type::ColorAttachmentRGB))
+			{
+				std::cerr << "Failed to create color attachment \n";
+				return false;
+			}
 
-		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		{
+			color_attachments.push_back(std::move(color_attachment));
+
+			glGenRenderbuffers(1, &depth_buffer_id);
+			glBindRenderbuffer(GL_RENDERBUFFER, depth_buffer_id);
+			glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 1280, 720);
+
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, color_attachments.back().texture_id, 0);
+			glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depth_buffer_id);
+
+			if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+			{
+				glBindFramebuffer(GL_FRAMEBUFFER, 0);
+				return false;
+			}
+
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
-			return false;
 		}
+		break; 
 
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		case Layout::Color16fDepth: 
+		{
+			Texture color_attachment;
+			color_attachment.width = 1280;
+			color_attachment.height = 720;
+
+			if (!color_attachment.Init(Type::ColorAttachmentRGB16bit))
+			{
+				std::cerr << "Failed to create color attachment \n";
+				return false;
+			}
+
+			color_attachments.push_back(std::move(color_attachment));
+
+			glGenRenderbuffers(1, &depth_buffer_id);
+			glBindRenderbuffer(GL_RENDERBUFFER, depth_buffer_id);
+			glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 1280, 720);
+
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, color_attachments.back().texture_id, 0);
+			glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depth_buffer_id);
+
+			if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+			{
+				glBindFramebuffer(GL_FRAMEBUFFER, 0);
+				return false;
+			}
+
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		}
 	}
+
 	return true;
 }
 
@@ -66,4 +97,8 @@ void Framebuffer::Un_Bind()
 Framebuffer::~Framebuffer()
 {
 	glDeleteFramebuffers(1, &framebuffer_id);
+	for (auto& texture : color_attachments) 
+	{
+		texture.Clear(); 
+	}
 }

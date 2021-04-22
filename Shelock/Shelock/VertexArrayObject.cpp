@@ -30,7 +30,7 @@ void VertexArrayObject::Init(std::vector<Vertex>& vertices, std::vector<unsigned
 		}
 		break;
 
-		case VertexLayout::PositionNormal: 
+		case VertexLayout::PositionUv: 
 		{
 			glGenVertexArrays(1, &vertex_array_obj_id);
 			glBindVertexArray(vertex_array_obj_id);
@@ -47,12 +47,12 @@ void VertexArrayObject::Init(std::vector<Vertex>& vertices, std::vector<unsigned
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
 
 			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv_coord));
 		}	
 		break; 
 
 
-		case VertexLayout::PositionNormalUV: 
+		case VertexLayout::PositionUvNormal: 
 		{
 			glGenVertexArrays(1, &vertex_array_obj_id);
 			glBindVertexArray(vertex_array_obj_id);
@@ -69,14 +69,14 @@ void VertexArrayObject::Init(std::vector<Vertex>& vertices, std::vector<unsigned
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
 
 			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv_coord));
 
 			glEnableVertexAttribArray(2);
-			glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv_coord));
+			glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
 		}
 		break; 
 
-		case VertexLayout::PositionNormalUVTangent: 
+		case VertexLayout::PositionUvNormalTangent: 
 		{
 			glGenVertexArrays(1, &vertex_array_obj_id);
 			glBindVertexArray(vertex_array_obj_id);
@@ -93,10 +93,10 @@ void VertexArrayObject::Init(std::vector<Vertex>& vertices, std::vector<unsigned
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
 
 			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv_coord));
 
 			glEnableVertexAttribArray(2);
-			glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv_coord));
+			glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
 
 			glEnableVertexAttribArray(3);
 			glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, tangent));

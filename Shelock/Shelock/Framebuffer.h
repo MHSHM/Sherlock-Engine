@@ -3,11 +3,15 @@
 
 #define MAX_COLOR_ATTACHMENTS 4
 
+#include "Texture.h"
+
 #include <vector>
 
 enum class Layout 
 {
-	ColorDepth
+	ColorDepth,
+	Color16fDepth,
+	Color32fDepth
 };
 
 class Framebuffer
@@ -16,7 +20,7 @@ public:
 
 	Framebuffer(); 
 
-	bool Create_Framebuffer(const Layout& layout);
+	bool Init(const Layout& layout);
 
 	void Bind(); 
 	void Un_Bind(); 
@@ -25,6 +29,6 @@ public:
 	
 	unsigned int framebuffer_id;
 	unsigned int depth_buffer_id; 
-	std::vector<unsigned int> color_attachments; 
+	std::vector<Texture> color_attachments; 
 };
 

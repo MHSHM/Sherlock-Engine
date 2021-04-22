@@ -105,7 +105,12 @@ void Shader::Bind()
 	glUseProgram(shader_program_id); 
 }
 
-Shader::~Shader()
+void Shader::Un_Bind()
 {
-	glDeleteShader(shader_program_id); 
+	glUseProgram(0); 
+}
+
+void Shader::Clear() 
+{
+	glDeleteShader(shader_program_id);
 }

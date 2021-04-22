@@ -22,8 +22,9 @@ public:
 	void Set_Int_Uniform(std::string uniform, int val); 
 
 	void Bind();
+	void Un_Bind(); 
 
-	~Shader(); 
+	void Clear(); 
 
 private:
 	std::string Parse_Source(const std::string& path);

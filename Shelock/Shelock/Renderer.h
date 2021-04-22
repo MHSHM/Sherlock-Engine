@@ -3,6 +3,7 @@
 #include "Scene.h"
 #include "Framebuffer.h"
 #include "Shader.h"
+#include "Quad.h"
 
 #include <vector>
 #include <unordered_map>
@@ -15,8 +16,11 @@ public:
 
 
 	void Draw(Scene& scene, Framebuffer& render_target); 
-	
+	void Draw_To_Quad(Texture& texture_to_draw, Quad quad, Framebuffer& render_target);
+
 	void Load_Shaders(); 
+
+	void Clear(); 
 
 	class Game* game;
 

@@ -71,7 +71,7 @@ void Renderer::Draw(Scene& scene, Framebuffer& render_target)
 		{
 			mesh.material.albedo_map->Bind(0); 
 			shaders_table["basic"]->Set_Int_Uniform("surface_material.albedo", 0);
-			
+
 			mesh.material.normal_map->Bind(1); 
 			shaders_table["basic"]->Set_Int_Uniform("surface_material.normals", 1);
 
@@ -81,6 +81,9 @@ void Renderer::Draw(Scene& scene, Framebuffer& render_target)
 			mesh.VAO.Un_Bind();
 		}
 	}
+
+	shaders_table["basic"]->Un_Bind(); 
+
 
 	// Draw Skybox
 	glDepthFunc(GL_LEQUAL);
@@ -97,8 +100,30 @@ void Renderer::Draw(Scene& scene, Framebuffer& render_target)
 
 	scene.sky_box.cube_map.Un_Bind();
 	scene.sky_box.vao.Un_Bind();
-
+	shaders_table["skybox"]->Un_Bind(); 
+	
 	render_target.Un_Bind(); 
+}
+
+void Renderer::Draw_To_Quad(Texture& texture_to_draw, Quad quad, Framebuffer& render_target)
+{
+	render_target.Bind();
+
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glDisable(GL_DEPTH_TEST); 
+
+	shaders_table["hdr"]->Bind(); 
+
+	game->hdr_render_target.color_attachments[0].Bind(0);
+	shaders_table["hdr"]->Set_Int_Uniform("hdr_scene", 0);
+
+	quad.vao.Bind(); 
+	glDrawElements(GL_TRIANGLES, quad.vao.Get_Element_Buffer_Size(), GL_UNSIGNED_INT, 0);
+
+	quad.vao.Un_Bind();
+	shaders_table["hdr"]->Un_Bind(); 
+	render_target.Un_Bind();
 }
 
 void Renderer::Load_Shaders()
@@ -114,4 +139,20 @@ void Renderer::Load_Shaders()
 	skybox.Create_Shader_Program("Shaders/Skybox.vert", "Shaders/Skybox.frag");
 	shaders.push_back(std::move(skybox)); 
 	shaders_table["skybox"] = &(shaders.back());
+
+	Shader hdr; 
+	hdr.Create_Shader_Program("Shaders/hdr.vert", "Shaders/hdr.frag"); 
+	shaders.push_back(std::move(hdr)); 
+	shaders_table["hdr"] = &(shaders.back());
+}
+
+void Renderer::Clear()
+{
+	
+	for (auto& shader : shaders) 
+	{
+		shader.Clear(); 
+	}
+
+	shaders_table.clear(); 
 }

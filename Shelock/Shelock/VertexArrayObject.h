@@ -5,9 +5,9 @@
 enum class VertexLayout
 {
 	Position = 0, 
-	PositionNormal = 1,
-	PositionNormalUV = 2, 
-	PositionNormalUVTangent = 3
+	PositionUv = 1,
+	PositionUvNormal = 2, 
+	PositionUvNormalTangent = 3
 };
 
 class VertexArrayObject

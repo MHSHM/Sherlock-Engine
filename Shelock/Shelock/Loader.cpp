@@ -119,8 +119,11 @@ std::vector<Mesh> Loader::Process_Meshes()
 		}
 
 		Mesh mesh(positions, normals, uv_coords, tangents, indices); 
-		mesh.material.albedo_map = Load_Texture("Models/BaseColor.png"); 
-		mesh.material.normal_map = Load_Texture("Models/NormalMap.png"); 
+		mesh.material.albedo_map    = Load_Texture("Models/BaseColor.png"); 
+		mesh.material.normal_map    = Load_Texture("Models/NormalMap.png"); 
+		mesh.material.metalic_map   = Load_Texture("Models/Metalness.png"); 
+		mesh.material.roughness_map = Load_Texture("Models/Roughness.png"); 
+		mesh.material.AO_map		= Load_Texture("Models/AOMap.png"); 
 
 		meshes[i] = std::move(mesh);
 	}

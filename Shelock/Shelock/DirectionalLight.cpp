@@ -4,7 +4,7 @@
 
 DirectionalLight::DirectionalLight(Actor* _owner):
 	Component(_owner),
-	color(1.0f, 1.0f, 1.0f)
+	color(50.47, 50.31, 50.79)
 {
 }
 

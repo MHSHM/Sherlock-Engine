@@ -22,28 +22,30 @@ void Renderer::Draw(Scene& scene, Framebuffer& render_target)
 	glm::mat4 projection = scene.camera->actor->Get_Component<FPSCamera>()->projection;
 
 	// Draw Scene
-	shaders_table["basic"]->Bind();
+	shaders_table["pbr"]->Bind();
 
-	shaders_table["basic"]->Set_Int_Uniform("scene_point_lights", scene.point_light_manager.components.size()); 
-	shaders_table["basic"]->Set_Int_Uniform("scene_spot_light", scene.spot_light_manager.components.size()); 
+	shaders_table["pbr"]->Set_Vec3_Uniform("world_camera", scene.camera->actor->Get_Component<Transform>()->position);
 	
-	shaders_table["basic"]->Set_Matrix4_Uniform("u_view_matrix", view);
-	shaders_table["basic"]->Set_Matrix4_Uniform("u_projection_matrix", projection);
+	shaders_table["pbr"]->Set_Int_Uniform("scene_point_lights", scene.point_light_manager.components.size()); 
+	shaders_table["pbr"]->Set_Int_Uniform("scene_spot_light", scene.spot_light_manager.components.size()); 
 	
-	shaders_table["basic"]->Set_Vec3_Uniform("dir_light.direction", scene.dir_light->actor->Get_Component<DirectionalLight>()->direction);
-	shaders_table["basic"]->Set_Vec3_Uniform("dir_light.color", scene.dir_light->actor->Get_Component<DirectionalLight>()->color);
+	shaders_table["pbr"]->Set_Matrix4_Uniform("u_view_matrix", view);
+	shaders_table["pbr"]->Set_Matrix4_Uniform("u_projection_matrix", projection);
+	
+	shaders_table["pbr"]->Set_Vec3_Uniform("dir_light.direction", scene.dir_light->actor->Get_Component<DirectionalLight>()->direction);
+	shaders_table["pbr"]->Set_Vec3_Uniform("dir_light.color", scene.dir_light->actor->Get_Component<DirectionalLight>()->color);
 
 	for (int i = 0; i < scene.point_light_manager.components.size(); ++i)
 	{
 		std::string index = std::to_string(i); 
 		PointLight current_pointlight = scene.point_light_manager.components[i];
 
-		shaders_table["basic"]->Set_Vec3_Uniform("point_lights[" + index + "].position", current_pointlight.position);
-		shaders_table["basic"]->Set_Vec3_Uniform("point_lights[" + index + "].color", current_pointlight.color);
-		shaders_table["basic"]->Set_Float_Uniform("point_lights[" + index + "].radius", current_pointlight.radius);
-		shaders_table["basic"]->Set_Float_Uniform("point_lights[" + index + "].linear", current_pointlight.linear);
-		shaders_table["basic"]->Set_Float_Uniform("point_lights[" + index + "].quadratic", current_pointlight.quadratic);
-		shaders_table["basic"]->Set_Float_Uniform("point_lights[" + index + "].falloff_distance", current_pointlight.falloff_distance);
+		shaders_table["pbr"]->Set_Vec3_Uniform("point_lights[" + index + "].position", current_pointlight.position);
+		shaders_table["pbr"]->Set_Vec3_Uniform("point_lights[" + index + "].color", current_pointlight.color);
+		shaders_table["pbr"]->Set_Float_Uniform("point_lights[" + index + "].radius", current_pointlight.radius);
+		shaders_table["pbr"]->Set_Float_Uniform("point_lights[" + index + "].linear", current_pointlight.linear);
+		shaders_table["pbr"]->Set_Float_Uniform("point_lights[" + index + "].quadratic", current_pointlight.quadratic);
+		shaders_table["pbr"]->Set_Float_Uniform("point_lights[" + index + "].falloff_distance", current_pointlight.falloff_distance);
 	}
 	
 	for (int i = 0; i < scene.spot_light_manager.components.size(); ++i)
@@ -51,11 +53,11 @@ void Renderer::Draw(Scene& scene, Framebuffer& render_target)
 		std::string index = std::to_string(i); 
 		SpotLight current_spotlight = scene.spot_light_manager.components[i];
 
-		shaders_table["basic"]->Set_Float_Uniform("spot_lights[" + index + "].u", current_spotlight.u);
-		shaders_table["basic"]->Set_Float_Uniform("spot_lights[" + index + "].p", current_spotlight.p);
-		shaders_table["basic"]->Set_Vec3_Uniform("spot_lights[" + index + "].position", current_spotlight.position);
-		shaders_table["basic"]->Set_Vec3_Uniform("spot_lights[" + index + "].forward", current_spotlight.forward);
-		shaders_table["basic"]->Set_Vec3_Uniform("spot_lights[" + index + "].color", current_spotlight.color);
+		shaders_table["pbr"]->Set_Float_Uniform("spot_lights[" + index + "].u", current_spotlight.u);
+		shaders_table["pbr"]->Set_Float_Uniform("spot_lights[" + index + "].p", current_spotlight.p);
+		shaders_table["pbr"]->Set_Vec3_Uniform("spot_lights[" + index + "].position", current_spotlight.position);
+		shaders_table["pbr"]->Set_Vec3_Uniform("spot_lights[" + index + "].forward", current_spotlight.forward);
+		shaders_table["pbr"]->Set_Vec3_Uniform("spot_lights[" + index + "].color", current_spotlight.color);
 	}
 	
 
@@ -65,15 +67,24 @@ void Renderer::Draw(Scene& scene, Framebuffer& render_target)
 		
 		Transform* transform = model_comp.owner->Get_Component<Transform>();
 
-		shaders_table["basic"]->Set_Matrix4_Uniform("u_world_matrix", transform->world_matrix);
+		shaders_table["pbr"]->Set_Matrix4_Uniform("u_world_matrix", transform->world_matrix);
 
 		for (auto& mesh : meshses) 
 		{
 			mesh.material.albedo_map->Bind(0); 
-			shaders_table["basic"]->Set_Int_Uniform("surface_material.albedo", 0);
+			shaders_table["pbr"]->Set_Int_Uniform("surface_material.albedo", 0);
 
 			mesh.material.normal_map->Bind(1); 
-			shaders_table["basic"]->Set_Int_Uniform("surface_material.normals", 1);
+			shaders_table["pbr"]->Set_Int_Uniform("surface_material.normals", 1);
+			
+			mesh.material.metalic_map->Bind(2); 
+			shaders_table["pbr"]->Set_Int_Uniform("surface_material.metallic", 2);
+			
+			mesh.material.roughness_map->Bind(3); 
+			shaders_table["pbr"]->Set_Int_Uniform("surface_material.roughness", 3);
+			
+			mesh.material.AO_map->Bind(4); 
+			shaders_table["pbr"]->Set_Int_Uniform("surface_material.AO", 4);
 
 			mesh.VAO.Bind(); 
 			glDrawElements(GL_TRIANGLES, mesh.VAO.Get_Element_Buffer_Size(), GL_UNSIGNED_INT, nullptr);
@@ -82,10 +93,12 @@ void Renderer::Draw(Scene& scene, Framebuffer& render_target)
 		}
 	}
 
-	shaders_table["basic"]->Un_Bind(); 
+	shaders_table["pbr"]->Un_Bind(); 
 
 
 	// Draw Skybox
+	
+	/*
 	glDepthFunc(GL_LEQUAL);
 
 	shaders_table["skybox"]->Bind();
@@ -101,6 +114,7 @@ void Renderer::Draw(Scene& scene, Framebuffer& render_target)
 	scene.sky_box.cube_map.Un_Bind();
 	scene.sky_box.vao.Un_Bind();
 	shaders_table["skybox"]->Un_Bind(); 
+	*/
 	
 	render_target.Un_Bind(); 
 }
@@ -130,10 +144,10 @@ void Renderer::Load_Shaders()
 {
 	shaders.reserve(10); 
 
-	Shader shader;
-	shader.Create_Shader_Program("Shaders/shader.vert", "Shaders/shader.frag");
-	shaders.push_back(std::move(shader)); 
-	shaders_table["basic"] = &(shaders.back());
+	Shader pbr;
+	pbr.Create_Shader_Program("Shaders/pbr.vert", "Shaders/pbr.frag");
+	shaders.push_back(std::move(pbr));
+	shaders_table["pbr"] = &(shaders.back());
 
 	Shader skybox; 
 	skybox.Create_Shader_Program("Shaders/Skybox.vert", "Shaders/Skybox.frag");

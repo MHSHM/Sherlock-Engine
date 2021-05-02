@@ -147,7 +147,7 @@ void Game::Load_Scene_Data()
 {
 	
 	SceneNode* helmet = loader.Load(scene, "Models/HelmetPresentationLightMap.fbx");
-	helmet->actor->Get_Component<Transform>()->Set_Position(glm::vec3(0.0f, 0.0f, 0.0f)); 
+	helmet->actor->Get_Component<Transform>()->Set_Position(glm::vec3(0.0f, 0.0f, 2.0f)); 
 	helmet->actor->Get_Component<Transform>()->Set_Scale(1.0f);
 	
 	/*
@@ -160,24 +160,15 @@ void Game::Load_Scene_Data()
 	scene.FBSCamera_manager.Add_Component(camera->actor);
 	scene.transform_manager.Add_Component(camera->actor);
 	scene.point_light_manager.Add_Component(camera->actor); 
-	camera->actor->Get_Component<Transform>()->Set_Position(glm::vec3(0.0f, 0.0f, 2.0f));
+	scene.spot_light_manager.Add_Component(camera->actor); 
+	camera->actor->Get_Component<Transform>()->Set_Position(glm::vec3(0.0f, 0.0f, 0.0f));
 	
 	scene.camera = camera;
-
-	SceneNode* p1 = scene.Add_Scene_Node(SceneNode(&scene)); 
-	scene.transform_manager.Add_Component(p1->actor);
-	scene.point_light_manager.Add_Component(p1->actor); 
-	p1->actor->Get_Component<Transform>()->Set_Position(glm::vec3(1.0f, 0.0f, 0.0f));
-	
-	SceneNode* p2 = scene.Add_Scene_Node(SceneNode(&scene)); 
-	scene.transform_manager.Add_Component(p2->actor);
-	scene.point_light_manager.Add_Component(p2->actor); 
-	p2->actor->Get_Component<Transform>()->Set_Position(glm::vec3(-1.0f, 0.0f, 0.0f)); 
 
 	SceneNode* dir_light = scene.Add_Scene_Node(SceneNode(&scene));
 	scene.transform_manager.Add_Component(dir_light->actor); 
 	scene.directional_light_manager.Add_Component(dir_light->actor);
-	dir_light->actor->Get_Component<Transform>()->position = glm::vec3(0.0f, 10.0f, 5.0f); 
+	dir_light->actor->Get_Component<Transform>()->position = glm::vec3(0.0f, 1000.0f, 0.0f); 
 
 	scene.dir_light = dir_light;
 }

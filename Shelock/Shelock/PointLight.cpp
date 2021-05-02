@@ -5,7 +5,7 @@
 
 PointLight::PointLight(Actor* _owner):
 	Component(_owner),
-	color(glm::vec3(1.0f, 1.0f, 1.0f)),
+	color(glm::vec3(21.47, 23.31, 20.79)),
 	radius(1.0f),
 	linear(0.22),
 	quadratic(0.20),
